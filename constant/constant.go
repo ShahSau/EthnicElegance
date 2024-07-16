@@ -44,6 +44,11 @@ const (
 	DeleteCategoryRoute     = "/category"
 	AddCouponRoute          = "/coupon"
 	DeleteCouponRoute       = "/coupon"
+	RemoveFromCartRoute     = "/cart"
+	ListCartRoute           = "/cart"
+	EmptyCartRoute          = "/cart"
+	ApplyCouponRoute        = "/cart"
+	GetProductLinkRoute     = "/product-link"
 )
 
 const (

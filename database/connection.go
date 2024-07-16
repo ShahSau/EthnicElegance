@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/ShahSau/EthnicElegance/types"
 	"github.com/joho/godotenv"
 
 	//"go.mongodb.org/mongo-driver/bson/primitive"
@@ -20,7 +21,14 @@ type manager struct {
 	cancel     context.CancelFunc
 }
 
-var dbManager *manager
+var Mgr Manager
+
+type Manager interface {
+	Insert(interface{}, string) (interface{}, error)
+	GetSingleRecordByEmail(string, string) *types.Verification
+
+	GetSingleRecordByEmailForUser(string, string) types.User
+}
 
 func EnvMongoURI() string {
 	err := godotenv.Load()

@@ -13,45 +13,50 @@ var healthCheckRoutes = Routes{
 }
 
 var userRoutes = Routes{
-	// Route{"VerifyEmail", http.MethodPost, constant.VerifyEmailRoute, controller.},
-	// Route{"VerifyOtp", http.MethodPost, constant.VerifyOtpRoute, controller.},
-	// Route{"ResendEmail", http.MethodPost, constant.ResendEmailRoute, controller.},
+	Route{"VerifyEmail", http.MethodPost, constant.VerifyEmailRoute, controller.VerifyEmail},
+	Route{"VerifyOtp", http.MethodPost, constant.VerifyOtpRoute, controller.VerifyOtp},
+	Route{"ResendEmail", http.MethodPost, constant.ResendEmailRoute, controller.VerifyEmail},
 
 	// Register User
-	// Route{"Register User", http.MethodPost, constant.UserRegisterRoute, controller.},
-	// Route{"Login User", http.MethodPost, constant.UserLoginRoute, controller.},
+	Route{"Register User", http.MethodPost, constant.UserRegisterRoute, controller.RegisterUser},
+	Route{"Login User", http.MethodPost, constant.UserLoginRoute, controller.UserLogin},
 
-	// Route{"Signout", http.MethodGet, constant.UserLogoutRoute, controller.},
+	Route{"Signout", http.MethodGet, constant.UserLogoutRoute, controller.Signout},
 }
 
 var productGlobalRoutes = Routes{
-	// Route{"List Product", http.MethodGet, constant.ListProductRoute, controller.},
-	// Route{"Search Product", http.MethodGet, constant.SearchProductRoute, controller.},
-	// Route{"List Category", http.MethodGet, constant.ListCategoryRoute, controller.},
-	// Route{"List Single Product", http.MethodGet, constant.ListSingleProductRoute, controller.},
+	Route{"List Product", http.MethodGet, constant.ListProductRoute, controller.ListProductsController},
+	Route{"Search Product", http.MethodGet, constant.SearchProductRoute, controller.SearchProductController},
+	Route{"List Category", http.MethodGet, constant.ListCategoryRoute, controller.ListCategoryController},
+	Route{"List Single Product", http.MethodGet, constant.ListSingleProductRoute, controller.ListSingleProductController},
+	Route{"Get Product Link", http.MethodGet, constant.GetProductLinkRoute, controller.GetProductLink},
 }
 
 var userAuthRoutes = Routes{
-	// Route{"Add to cart", http.MethodPost, constant.AddToCartRoute, controller.},
-	// Route{"Add Address", http.MethodPost, constant.AddAddressRoute, controller.},
-	// Route{"Edit Address", http.MethodPut, constant.EditAddressRoute, controller.},
-	// Route{"Update User", http.MethodPut, constant.UpdateUser, controller.},
-	// Route{"Checkout Order", http.MethodPut, constant.CheckoutRoute, controller.},
-	// Route{"Add to Favorite", http.MethodPost, constant.AddToFavoriteRoute, controller.},
-	// Route{"Remove from Favorite", http.MethodDelete, constant.RemoveFromFavoriteRoute, controller.},
-	// Route{"List Favorite", http.MethodGet, constant.ListFavoriteRoute, controller.},
+	Route{"Add to cart", http.MethodPost, constant.AddToCartRoute, controller.AddToCart},
+	Route{"Add Address", http.MethodPost, constant.AddAddressRoute, controller.AddAddress},
+	Route{"Edit Address", http.MethodPut, constant.EditAddressRoute, controller.EditAddress},
+	Route{"Update User", http.MethodPut, constant.UpdateUser, controller.UpdateUser},
+	Route{"Checkout Order", http.MethodPut, constant.CheckoutRoute, controller.CheckoutOrder},
+	Route{"Add to Favorite", http.MethodPost, constant.AddToFavoriteRoute, controller.AddToFavorite},
+	Route{"Remove from Favorite", http.MethodDelete, constant.RemoveFromFavoriteRoute, controller.RemoveFromFavorite},
+	Route{"List Favorite", http.MethodGet, constant.ListFavoriteRoute, controller.ListFavorite},
+	Route{"Remove from Cart", http.MethodDelete, constant.RemoveFromCartRoute, controller.RemoveFromCart},
+	Route{"List Cart", http.MethodGet, constant.ListCartRoute, controller.ListCart},
+	Route{"Empty Cart", http.MethodDelete, constant.EmptyCartRoute, controller.EmptyCart},
+	Route{"Apply Coupon", http.MethodPost, constant.ApplyCouponRoute, controller.ApplyCoupon},
 }
 
 var adminRoutes = Routes{
-	// Route{"All Users", http.MethodGet, constant.GetAllUserRoute, controller.},
-	// Route{"Block User", http.MethodPut, constant.BlockUserRoute, controller.},
-	// Route{"Unblock User", http.MethodPut, constant.UnblockUserRoute, controller.},
-	// Route{"Register Product", http.MethodPost, constant.RegisterProductRoute, controller.},
-	// Route{"Update Product", http.MethodPut, constant.UpdateProductRoute, controller.},
-	// Route{"Delete Product", http.MethodDelete, constant.DeleteProductRoute, controller.},
-	// Route{"Add Category", http.MethodPost, constant.AddCategoryRoute, controller.},
-	// Route{"Update Category", http.MethodPut, constant.UpdateCategoryRoute, controller.},
-	// Route{"Delete Category", http.MethodDelete, constant.DeleteCategoryRoute, controller.},
-	// Route{"Add coupons", http.MethodPost, constant.AddCouponRoute, controller.},
-	// Route{"Delete coupons", http.MethodDelete, constant.DeleteCouponRoute, controller.},
+	Route{"All Users", http.MethodGet, constant.GetAllUserRoute, controller.ListAllUsers},
+	Route{"Block User", http.MethodPut, constant.BlockUserRoute, controller.BlockUser},
+	Route{"Unblock User", http.MethodPut, constant.UnblockUserRoute, controller.UnblockUser},
+	Route{"Register Product", http.MethodPost, constant.RegisterProductRoute, controller.RegisterProduct},
+	Route{"Update Product", http.MethodPut, constant.UpdateProductRoute, controller.UpdateProduct},
+	Route{"Delete Product", http.MethodDelete, constant.DeleteProductRoute, controller.DeleteProduct},
+	Route{"Add Category", http.MethodPost, constant.AddCategoryRoute, controller.AddCategory},
+	Route{"Update Category", http.MethodPut, constant.UpdateCategoryRoute, controller.UpdateCategory},
+	Route{"Delete Category", http.MethodDelete, constant.DeleteCategoryRoute, controller.DeleteCategory},
+	Route{"Add coupons", http.MethodPost, constant.AddCouponRoute, controller.AddCoupon},
+	Route{"Delete coupons", http.MethodDelete, constant.DeleteCouponRoute, controller.DeleteCoupon},
 }
