@@ -41,10 +41,11 @@ const (
 	BlockUserRoute          = "/block-user"
 	UnblockUserRoute        = "/unblock-user"
 	AddCategoryRoute        = "/category"
-	UpdateCategoryRoute     = "/category"
-	DeleteCategoryRoute     = "/category"
+	UpdateCategoryRoute     = "/category/:id"
+	DeleteCategoryRoute     = "/category/:id"
 	AddCouponRoute          = "/coupon"
-	DeleteCouponRoute       = "/coupon"
+	DeleteCouponRoute       = "/coupon/:id"
+	ListCouponRoute         = "/coupon"
 	RemoveFromCartRoute     = "/cart"
 	ListCartRoute           = "/cart"
 	EmptyCartRoute          = "/cart/all"
@@ -69,6 +70,8 @@ const (
 	ProductCollection       = "products"
 	AddressCollection       = "user_addresses"
 	CartCollection          = "user_cart"
+	CategoryCollection      = "categories"
+	CouponCollection        = "coupons"
 )
 
 // messages

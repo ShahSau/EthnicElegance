@@ -35,3 +35,10 @@ type Login struct {
 	Email    string `json:"email" bson:"email"`
 	Password string `json:"password" bson:"password"`
 }
+
+type Coupon struct {
+	ID       primitive.ObjectID `json:"id"`
+	Name     string             `json:"name"`
+	Discount int                `json:"discount"`
+	Expiry   string             `json:"expiry"`
+}
