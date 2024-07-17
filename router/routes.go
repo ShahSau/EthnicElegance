@@ -20,6 +20,8 @@ var userRoutes = Routes{
 	// Register User
 	Route{"Register User", http.MethodPost, constant.UserRegisterRoute, controller.RegisterUser},
 	Route{"Login User", http.MethodPost, constant.UserLoginRoute, controller.UserLogin},
+
+	Route{"Sign Out", http.MethodPost, constant.UserLogoutRoute, controller.SignOut},
 }
 
 var productGlobalRoutes = Routes{

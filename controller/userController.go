@@ -50,8 +50,6 @@ func RegisterUser(c *gin.Context) {
 	// checking if email is unique
 	emailExists := userCollection.FindOne(c, bson.M{"email": userClient.Email}).Decode(&dbUser)
 
-	fmt.Println("emaiailExists:", emailExists)
-
 	if emailExists == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "email already exists"})
 		return
@@ -99,7 +97,6 @@ func RegisterUser(c *gin.Context) {
 	}
 
 	dbUser.Password = ""
-
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success", "data": dbUser, "token": token})
 
 }
@@ -156,8 +153,18 @@ func UserLogin(c *gin.Context) {
 
 	dbUser.Password = ""
 
+	c.Set("isAdmin", dbUser.UserType)
+	// jk, _ := c.Get("user")
+	// fmt.Println(jk, "dhhdhdhdhd")
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success", "data": dbUser, "token": token})
 
+}
+
+func SignOut(c *gin.Context) {
+	use := c.Value("user")
+	fmt.Println("SignOut", use)
+	// c.Set("user", "")
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
 }
 
 func AddAddress(c *gin.Context) {

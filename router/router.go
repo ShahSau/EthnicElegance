@@ -81,7 +81,7 @@ func (r routes) EcommerceUser(rg *gin.RouterGroup) {
  */
 func (r routes) EcommerceAdmin(rg *gin.RouterGroup) {
 	orderRouteGrouping := rg.Group("/ecommerce")
-	orderRouteGrouping.Use(CORSMiddleware())
+	//orderRouteGrouping.Use(middleware.IsAdmin)
 	for _, route := range adminRoutes {
 		switch route.Method {
 		case "GET":
@@ -176,7 +176,7 @@ func ClientRoutes() {
 	r.EcommerceAdmin(v1)
 
 	if err := r.router.Run(":" + os.Getenv("PORT")); err != nil {
-		log.Println("Failed to run server: %v", err)
+		log.Printf("Failed to run server: %v", err)
 	}
 }
 

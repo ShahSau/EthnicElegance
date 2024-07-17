@@ -1,23 +1,81 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/ShahSau/EthnicElegance/constant"
+	"github.com/ShahSau/EthnicElegance/database"
+	"github.com/ShahSau/EthnicElegance/helper"
+	"github.com/ShahSau/EthnicElegance/types"
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+)
 
 func ListAllUsers(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "List All Users",
+	var req struct {
+		Email string `json:"email"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+
+	// checking is admin or not
+
+	isAdmin, err := helper.IsUserAdmin(c, req.Email)
+	fmt.Println(isAdmin, err)
+
+	if !isAdmin {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	results, err := userCollection.Find(c.Request.Context(), bson.M{}, nil)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error fetching users",
+		})
+		return
+	}
+
+	defer results.Close(c.Request.Context())
+
+	var users []types.User
+
+	for results.Next(c.Request.Context()) {
+		var singleUser types.User
+		if err = results.Decode(&singleUser); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": true, "message": err.Error()})
+		}
+
+		users = append(users, singleUser)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Users fetched",
+		"users":   users,
+		"error":   false,
 	})
+
 }
 
 func BlockUser(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Block User",
-	})
+	get, _ := c.Get("isAdmin")
+	fmt.Println(get, "DDDD")
 }
 
 func UnblockUser(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Unblock User",
-	})
+	get, _ := c.Get("isAdmin")
+	fmt.Println(get, "DDDD")
 }
 
 func RegisterProduct(c *gin.Context) {
