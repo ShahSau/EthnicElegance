@@ -69,13 +69,93 @@ func ListAllUsers(c *gin.Context) {
 }
 
 func BlockUser(c *gin.Context) {
-	get, _ := c.Get("isAdmin")
-	fmt.Println(get, "DDDD")
+	var req struct {
+		Email     string `json:"email"`
+		UserEmail string `json:"user_email"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+
+	// checking is admin or not
+
+	isAdmin, err := helper.IsUserAdmin(c, req.Email)
+	fmt.Println(isAdmin, err)
+
+	if !isAdmin {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	_, err = userCollection.UpdateOne(c.Request.Context(), bson.M{"email": req.UserEmail}, bson.M{"$set": bson.M{"is_blocked": true}})
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error blocking user",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "User blocked",
+	})
+
 }
 
 func UnblockUser(c *gin.Context) {
-	get, _ := c.Get("isAdmin")
-	fmt.Println(get, "DDDD")
+	var req struct {
+		Email     string `json:"email"`
+		UserEmail string `json:"user_email"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+
+	// checking is admin or not
+
+	isAdmin, err := helper.IsUserAdmin(c, req.Email)
+	fmt.Println(isAdmin, err)
+
+	if !isAdmin {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+	var dbUser types.User
+	err = userCollection.FindOne(c.Request.Context(), bson.M{"email": req.UserEmail}).Decode(&dbUser)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error checking user block status",
+		})
+		return
+	}
+	if !dbUser.IsBlocked {
+		c.JSON(400, gin.H{
+			"message": "User is not blocked",
+		})
+		return
+	}
+	_, err = userCollection.UpdateOne(c.Request.Context(), bson.M{"email": req.UserEmail}, bson.M{"$set": bson.M{"is_blocked": false}})
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error unblocking user",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "User unblocked",
+	})
 }
 
 func RegisterProduct(c *gin.Context) {
