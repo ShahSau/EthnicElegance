@@ -20,8 +20,6 @@ var userRoutes = Routes{
 	// Register User
 	Route{"Register User", http.MethodPost, constant.UserRegisterRoute, controller.RegisterUser},
 	Route{"Login User", http.MethodPost, constant.UserLoginRoute, controller.UserLogin},
-
-	Route{"Signout", http.MethodGet, constant.UserLogoutRoute, controller.Signout},
 }
 
 var productGlobalRoutes = Routes{
@@ -36,6 +34,7 @@ var userAuthRoutes = Routes{
 	Route{"Add to cart", http.MethodPost, constant.AddToCartRoute, controller.AddToCart},
 	Route{"Add Address", http.MethodPost, constant.AddAddressRoute, controller.AddAddress},
 	Route{"Edit Address", http.MethodPut, constant.EditAddressRoute, controller.EditAddress},
+	Route{"Edit Name", http.MethodPut, constant.EditNameRoute, controller.EditName},
 	Route{"Update User", http.MethodPut, constant.UpdateUser, controller.UpdateUser},
 	Route{"Checkout Order", http.MethodPut, constant.CheckoutRoute, controller.CheckoutOrder},
 	Route{"Add to Favorite", http.MethodPost, constant.AddToFavoriteRoute, controller.AddToFavorite},

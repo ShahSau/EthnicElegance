@@ -30,6 +30,7 @@ const (
 	AddToCartRoute          = "/cart"
 	AddAddressRoute         = "/address"
 	EditAddressRoute        = "/address"
+	EditNameRoute           = "/name"
 	GetSingleUserRoute      = "/user/:id"
 	UpdateUser              = "/update-user"
 	CheckoutRoute           = "/user/:id"

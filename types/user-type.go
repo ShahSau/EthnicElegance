@@ -13,6 +13,7 @@ type User struct {
 	UpdatedAt int64              `json:"updated_at" bson:"updated_at"`
 	Favourite []string           `json:"favourite" bson:"favourite"`
 	IsBlocked bool               `json:"is_blocked" bson:"is_blocked"`
+	Address   string             `json:"address" bson:"address"`
 }
 
 type UserClient struct {

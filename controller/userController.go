@@ -65,6 +65,7 @@ func RegisterUser(c *gin.Context) {
 		Password:  helper.EncryptPassword(userClient.Password),
 		UserType:  "user",
 		IsBlocked: false,
+		Address:   "",
 		Favourite: []string{},
 		CreatedAt: time.Now().Unix(),
 		UpdatedAt: time.Now().Unix(),
@@ -159,34 +160,176 @@ func UserLogin(c *gin.Context) {
 
 }
 
-func Signout(c *gin.Context) {
-	var user types.User
+func AddAddress(c *gin.Context) {
+	type AddressData struct {
+		Address string `json:"address" bson:"address"`
+		Email   string `json:"email" bson:"email"`
+	}
 
-	claims := c.MustGet("claims").(*JwtClaim)
+	var addAddress AddressData
+
+	defer c.Request.Body.Close()
+
+	// binding the request body to address
+	reqErr := c.ShouldBindJSON(&addAddress)
+
+	if reqErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": reqErr.Error()})
+		return
+	}
 
 	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
 
-	userCollection.FindOne(c, bson.M{"_id": claims.UserId}).Decode(&user)
+	var dbUser types.User
 
-	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success", "data": user})
-}
+	// checking if user exists
+	emailExists := userCollection.FindOne(c, bson.M{"email": addAddress.Email}).Decode(&dbUser)
 
-func AddAddress(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Add Address",
-	})
+	if emailExists != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "email not found"})
+		return
+	}
+
+	// updating the address
+	_, updateErr := userCollection.UpdateOne(c, bson.M{"email": addAddress.Email}, bson.M{"$set": bson.M{"address": addAddress.Address}})
+
+	if updateErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": updateErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
+
 }
 
 func EditAddress(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Edit Address",
-	})
+	type AddressData struct {
+		Address string `json:"address" bson:"address"`
+		Email   string `json:"email" bson:"email"`
+	}
+
+	var editAddress AddressData
+
+	defer c.Request.Body.Close()
+
+	// binding the request body to address
+	reqErr := c.ShouldBindJSON(&editAddress)
+
+	if reqErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": reqErr.Error()})
+		return
+	}
+
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+
+	var dbUser types.User
+
+	// checking if user exists
+	emailExists := userCollection.FindOne(c, bson.M{"email": editAddress.Email}).Decode(&dbUser)
+
+	if emailExists != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "email not found"})
+		return
+	}
+
+	// updating the address
+	_, updateErr := userCollection.UpdateOne(c, bson.M{"email": editAddress.Email}, bson.M{"$set": bson.M{"address": editAddress.Address}})
+
+	if updateErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": updateErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
 }
 
 func UpdateUser(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Update User",
-	})
+	type UpdatePassword struct {
+		Email       string `json:"email" bson:"email"`
+		OldPassword string `json:"oldPassword" bson:"oldPassword"`
+		NewPassword string `json:"newPassword" bson:"newPassword"`
+	}
+
+	var updatePassword UpdatePassword
+
+	defer c.Request.Body.Close()
+
+	// binding the request body to updatePassword
+	reqErr := c.ShouldBindJSON(&updatePassword)
+
+	if reqErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": reqErr.Error()})
+		return
+	}
+
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+
+	var dbUser types.User
+
+	// checking if user exists
+	emailExists := userCollection.FindOne(c, bson.M{"email": updatePassword.Email}).Decode(&dbUser)
+
+	if emailExists != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "email not found"})
+		return
+	}
+
+	// checking the password
+	if !helper.ComparePassword(dbUser.Password, updatePassword.OldPassword) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "password not matched"})
+		return
+	}
+
+	// updating the password
+	_, updateErr := userCollection.UpdateOne(c, bson.M{"email": updatePassword.Email}, bson.M{"$set": bson.M{"password": helper.EncryptPassword(updatePassword.NewPassword)}})
+
+	if updateErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": updateErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
+}
+
+func EditName(c *gin.Context) {
+	type NameData struct {
+		Name  string `json:"name" bson:"name"`
+		Email string `json:"email" bson:"email"`
+	}
+
+	var editName NameData
+
+	defer c.Request.Body.Close()
+
+	// binding the request body to address
+	reqErr := c.ShouldBindJSON(&editName)
+
+	if reqErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": reqErr.Error()})
+		return
+	}
+
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+
+	var dbUser types.User
+
+	// checking if user exists
+	emailExists := userCollection.FindOne(c, bson.M{"email": editName.Email}).Decode(&dbUser)
+
+	if emailExists != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "email not found"})
+		return
+	}
+
+	// updating the name
+	_, updateErr := userCollection.UpdateOne(c, bson.M{"email": editName.Email}, bson.M{"$set": bson.M{"name": editName.Name}})
+
+	if updateErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": updateErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
 }
 
 func AddToFavorite(c *gin.Context) {
