@@ -15,10 +15,22 @@ type User struct {
 	IsBlocked bool               `json:"is_blocked" bson:"is_blocked"`
 }
 
+type UserClient struct {
+	Name     string `json:"name" bson:"name"`
+	Email    string `json:"email" bson:"email"`
+	Phone    string `json:"phone" bson:"phone"`
+	Password string `json:"password" bson:"password"`
+}
+
 type Verification struct {
 	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	Email     string             `json:"email" bson:"email"`
 	Otp       int64              `json:"otp" bson:"otp"`
 	Status    bool               `json:"status" bson:"status"`
 	CreatedAt int64              `json:"created_at" bson:"created_at"`
+}
+
+type Login struct {
+	Email    string `json:"email" bson:"email"`
+	Password string `json:"password" bson:"password"`
 }

@@ -46,8 +46,8 @@ const (
 	DeleteCouponRoute       = "/coupon"
 	RemoveFromCartRoute     = "/cart"
 	ListCartRoute           = "/cart"
-	EmptyCartRoute          = "/cart"
-	ApplyCouponRoute        = "/cart"
+	EmptyCartRoute          = "/cart/all"
+	ApplyCouponRoute        = "/cart/coupon"
 	GetProductLinkRoute     = "/product-link"
 )
 
@@ -64,7 +64,7 @@ const (
 // collections
 const (
 	VerificationsCollection = "verifications"
-	UserCollection          = "user"
+	UsersCollection         = "users"
 	ProductCollection       = "products"
 	AddressCollection       = "user_addresses"
 	CartCollection          = "user_cart"
@@ -75,6 +75,7 @@ const (
 	AlreadyRegisterWithThisEmail = "already register with this email"
 	EmailIsNotVerified           = "your email is not verified please verify your email"
 	EmailValidationError         = "wrong email entered"
+	EamilExists                  = "email already exists"
 	OtpValidationError           = "wrong otp entered"
 	OtpExpiredValidationError    = "otp expired"
 	AlreadyVerifiedError         = "already verified"
