@@ -24,6 +24,15 @@ type JwtClaim struct {
 	jwt.StandardClaims
 }
 
+// @Summary		User Signup
+// @Description	user can signup by giving their details
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// // @Param			signup  body  models.UserDetails  true	"signup"
+// // @Success		200	{object}	response.Response{}
+// // @Failure		500	{object}	response.Response{}
+// @Router			/users/signup [post]
 func RegisterUser(c *gin.Context) {
 	var userClient types.UserClient
 	var dbUser types.User

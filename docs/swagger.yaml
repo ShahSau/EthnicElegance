@@ -1,0 +1,36 @@
+info:
+  contact: {}
+paths:
+  /users/signup:
+    post:
+      consumes:
+      - application/json
+      description: user can signup by giving their details
+      produces:
+      - application/json
+      responses: {}
+      summary: User Signup
+      tags:
+      - User
+  /v1/ecommerce/users:
+    get:
+      consumes:
+      - application/json
+      description: List all users from the database by admin
+      parameters:
+      - description: Email of the user
+        in: header
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: List all users
+      tags:
+      - Admin
+swagger: "2.0"

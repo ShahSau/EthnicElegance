@@ -5,7 +5,10 @@ import (
 	"net/http"
 	"os"
 
+	docs "github.com/ShahSau/EthnicElegance/docs"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Route struct {
@@ -160,10 +163,19 @@ func (r routes) EcommerceAuthUser(rg *gin.RouterGroup) {
 	}
 }
 
+/*
+ *	Function for grouping swagger routes
+ */
+func (r routes) Swagger(rg *gin.RouterGroup) {
+	orderRouteGrouping := rg.Group("/ecommerce")
+	orderRouteGrouping.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
+
 func ClientRoutes() {
 	r := routes{
 		router: gin.Default(),
 	}
+
 	v1 := r.router.Group(os.Getenv("API_VERSION"))
 	r.EcommerceHealthCheck(v1)
 	r.EcommerceUser(v1)
@@ -174,6 +186,15 @@ func ClientRoutes() {
 
 	// Admin only
 	r.EcommerceAdmin(v1)
+
+	// swagger
+	r.Swagger(v1)
+
+	// Swagger docs
+	docs.SwaggerInfo.Title = "Ecommerce API"
+	docs.SwaggerInfo.Description = "This is a simple ecommerce API"
+
+	// r.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	if err := r.router.Run(":" + os.Getenv("PORT")); err != nil {
 		log.Printf("Failed to run server: %v", err)
