@@ -54,6 +54,8 @@ const (
 	EmptyCartRoute          = "/cart/all"
 	ApplyCouponRoute        = "/cart/coupon"
 	GetProductLinkRoute     = "/product-link"
+	AddOfferRoute           = "/offer"
+	UpdateOfferRoute        = "/offer/:id"
 )
 
 const (
@@ -75,6 +77,7 @@ const (
 	CartCollection          = "user_cart"
 	CategoryCollection      = "categories"
 	CouponCollection        = "coupons"
+	OfferCollection         = "offers"
 )
 
 // messages

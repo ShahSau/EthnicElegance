@@ -3,13 +3,12 @@ package helper
 import (
 	"errors"
 	"fmt"
+	"os"
+	"time"
 
-	"github.com/ShahSau/EthnicElegance/constant"
-	"github.com/ShahSau/EthnicElegance/database"
 	"github.com/ShahSau/EthnicElegance/types"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -43,18 +42,8 @@ func ComparePassword(hashedPwd string, plainPwd string) bool {
 	return err == nil
 }
 
-func IsUserAdmin(c *gin.Context, email string) (bool, error) {
-	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
-	var dbUser types.User
+func IsUserAdmin(c *gin.Context, tokenString string) (bool, error) {
 
-	err := userCollection.FindOne(c, bson.M{"email": email}).Decode(&dbUser)
-
-	if err != nil {
-		return false, err
-	}
-	if dbUser.UserType != "admin" {
-		return false, nil
-	}
 	return true, nil
 
 }
@@ -62,3 +51,42 @@ func IsUserAdmin(c *gin.Context, email string) (bool, error) {
 // func GenerateID() string {
 // 	return bson.NewObjectID().Hex()
 // }
+
+func GenerateToken(userId string, email string, userType string) (string, error) {
+	secretKey := os.Getenv("secretKey")
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"email":  email,
+		"userId": userId,
+		"type":   userType,
+		"exp":    time.Now().Add(time.Hour * 2).Unix(),
+	})
+
+	return token.SignedString([]byte(secretKey))
+}
+
+func VerifyToken(tokenString string) (string, string, error) {
+	secretKey := os.Getenv("secretKey")
+	token, err := jwt.Parse((tokenString), func(token *jwt.Token) (interface{}, error) {
+		_, ok := token.Method.(*jwt.SigningMethodHMAC)
+		if !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+
+		return []byte(secretKey), nil
+	})
+
+	if err != nil {
+		fmt.Print("error in isuseradmin", err)
+		return "", "", err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return "", "", errors.New("could not parse claims")
+	}
+
+	email := claims["type"].(string)
+	userType := claims["type"].(string)
+
+	return email, userType, nil
+}

@@ -3,7 +3,6 @@ package controller
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/ShahSau/EthnicElegance/constant"
@@ -79,7 +78,7 @@ func RegisterUser(c *gin.Context) {
 		Id:        primitive.NewObjectID(),
 	}
 
-	result, insertErr := userCollection.InsertOne(c, dbUser)
+	_, insertErr := userCollection.InsertOne(c, dbUser)
 
 	if insertErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": insertErr.Error()})
@@ -87,25 +86,15 @@ func RegisterUser(c *gin.Context) {
 	}
 
 	// jwt token
+	token, err := helper.GenerateToken(dbUser.Id.Hex(), dbUser.Email, dbUser.UserType)
 
-	claims := &JwtClaim{
-		UserId:   result.InsertedID.(primitive.ObjectID),
-		UserType: dbUser.UserType,
-		Email:    dbUser.Email,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: &jwt.Time{time.Now().Add(time.Hour * time.Duration(48))},
-			Issuer:    os.Getenv("jwtIssuer"),
-		},
-	}
-
-	token1 := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := token1.SignedString([]byte(os.Getenv("jwtSecret")))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to generate token"})
 		return
 	}
 
 	dbUser.Password = ""
+
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success", "data": dbUser, "token": token})
 
 }
@@ -142,29 +131,15 @@ func UserLogin(c *gin.Context) {
 	}
 
 	// jwt token
+	token, err := helper.GenerateToken(dbUser.Id.Hex(), dbUser.Email, dbUser.UserType)
 
-	claims := &JwtClaim{
-		UserId:   dbUser.Id,
-		UserType: dbUser.UserType,
-		Email:    dbUser.Email,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: &jwt.Time{time.Now().Add(time.Hour * time.Duration(48))},
-			Issuer:    os.Getenv("jwtIssuer"),
-		},
-	}
-
-	token1 := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := token1.SignedString([]byte(os.Getenv("jwtSecret")))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to generate token"})
 		return
 	}
 
 	dbUser.Password = ""
 
-	c.Set("isAdmin", dbUser.UserType)
-	// jk, _ := c.Get("user")
-	// fmt.Println(jk, "dhhdhdhdhd")
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success", "data": dbUser, "token": token})
 
 }

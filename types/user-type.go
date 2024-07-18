@@ -67,3 +67,9 @@ type Category struct {
 	ID       primitive.ObjectID `json:"id"`
 	Category string             `json:"category"`
 }
+
+type Offer struct {
+	CategoryId int  `json:"category_id"`
+	Discount   int  `json:"discount"`
+	Expiry     bool `json:"expiry"`
+}

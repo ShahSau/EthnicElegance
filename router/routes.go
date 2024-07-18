@@ -63,4 +63,7 @@ var adminRoutes = Routes{
 	Route{"List all products", http.MethodGet, constant.ListProductRouteAdmin, controller.ListProducts},
 	Route{"List all orders", http.MethodGet, constant.ListOrders, controller.ListAllOrders},
 	Route{"Add Stock", http.MethodPut, constant.UpdateStockRoute, controller.AddStock},
+	Route{"Add Offer", http.MethodPost, constant.AddOfferRoute, controller.AddOffer},
+	Route{"List All Offers", http.MethodGet, constant.AddOfferRoute, controller.ListAllOffers},
+	Route{"Update Offer", http.MethodPut, constant.UpdateOfferRoute, controller.ChangeOffersStatus},
 }
