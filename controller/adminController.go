@@ -210,8 +210,52 @@ func RegisterProduct(c *gin.Context) {
 }
 
 func UpdateProduct(c *gin.Context) {
+	var req struct {
+		Email       string          `json:"email"`
+		Name        string          `json:"name"`
+		Price       int             `json:"price"`
+		Description string          `json:"description"`
+		Images      string          `json:"images"`
+		Rating      float64         `json:"rating"`
+		Stock       int             `json:"stock"`
+		Keywords    []string        `json:"keywords"`
+		NumRating   int             `json:"num_rating"`
+		Commnets    []types.Comment `json:"comments"`
+		CategoryId  string          `json:"category_id"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+	id := c.Param("id")
+
+	// checking is admin or not
+
+	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+
+	if !isAdmin {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+
+	_, err := productCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$set": bson.M{"name": req.Name, "price": req.Price, "description": req.Description, "images": req.Images, "rating": req.Rating, "stock": req.Stock, "keywords": req.Keywords, "num_rating": req.NumRating, "comments": req.Commnets, "category_id": req.CategoryId}})
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error updating product",
+		})
+		return
+	}
+
 	c.JSON(200, gin.H{
-		"message": "Update Product",
+		"message": "Product updated",
 	})
 }
 
