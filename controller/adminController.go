@@ -159,9 +159,54 @@ func UnblockUser(c *gin.Context) {
 }
 
 func RegisterProduct(c *gin.Context) {
+	var req struct {
+		Email       string          `json:"email"`
+		Name        string          `json:"name"`
+		Price       int             `json:"price"`
+		Description string          `json:"description"`
+		Images      string          `json:"images"`
+		Rating      float64         `json:"rating"`
+		Stock       int             `json:"stock"`
+		Keywords    []string        `json:"keywords"`
+		NumRating   int             `json:"num_rating"`
+		Commnets    []types.Comment `json:"comments"`
+		CategoryId  string          `json:"category_id"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	// checking is admin or not
+
+	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+
+	if !isAdmin {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+
+	product, err := productCollection.InsertOne(c.Request.Context(), bson.M{"name": req.Name, "price": req.Price, "description": req.Description, "images": req.Images, "rating": req.Rating, "stock": req.Stock, "keywords": req.Keywords, "num_rating": req.NumRating, "comments": req.Commnets, "category_id": req.CategoryId, "id": primitive.NewObjectID().Hex()})
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error adding product",
+		})
+		return
+	}
+
 	c.JSON(200, gin.H{
-		"message": "Register Product",
+		"message": "Product added",
+		"product": product,
 	})
+
 }
 
 func UpdateProduct(c *gin.Context) {
@@ -171,9 +216,99 @@ func UpdateProduct(c *gin.Context) {
 }
 
 func DeleteProduct(c *gin.Context) {
+	var req struct {
+		Email string `json:"email"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+	id := c.Param("id")
+
+	// checking is admin or not
+
+	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+
+	if !isAdmin {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+
+	_, err := productCollection.DeleteOne(c.Request.Context(), bson.M{"id": id})
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error deleting product",
+		})
+		return
+	}
+
 	c.JSON(200, gin.H{
-		"message": "Delete Product",
+		"message": "Product deleted",
 	})
+
+}
+
+func ListProducts(c *gin.Context) {
+	var req struct {
+		Email string `json:"email"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	// checking is admin or not
+
+	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+
+	if !isAdmin {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+
+	results, err := productCollection.Find(c.Request.Context(), bson.M{}, nil)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error fetching products",
+		})
+		return
+	}
+
+	defer results.Close(c.Request.Context())
+
+	var products []types.Product
+
+	for results.Next(c.Request.Context()) {
+		var singleProduct types.Product
+		if err = results.Decode(&singleProduct); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": true, "message": err.Error()})
+		}
+
+		products = append(products, singleProduct)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":  "Products fetched",
+		"products": products,
+		"error":    false,
+	})
+
 }
 
 func AddCategory(c *gin.Context) {
@@ -436,6 +571,51 @@ func ListCoupons(c *gin.Context) {
 		"message": "Coupons fetched",
 		"coupons": coupons,
 		"error":   false,
+	})
+
+}
+
+func ListAllOrders(c *gin.Context) {
+}
+
+func AddStock(c *gin.Context) {
+	var req struct {
+		Email string `json:"email"`
+		Stock int    `json:"stock"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+	id := c.Param("id")
+
+	// checking is admin or not
+
+	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+
+	if !isAdmin {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+
+	_, err := productCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$inc": bson.M{"stock": req.Stock}})
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error updating stock",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Stock updated",
 	})
 
 }
