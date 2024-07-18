@@ -37,7 +37,7 @@ const (
 	UpdateUser              = "/update-user"
 	CheckoutRoute           = "/user/:id"
 	AddToFavoriteRoute      = "/favorite"
-	RemoveFromFavoriteRoute = "/favorite"
+	RemoveFromFavoriteRoute = "/remove-favorite"
 	ListFavoriteRoute       = "/favorite"
 	GetAllUserRoute         = "/users"
 	BlockUserRoute          = "/block-user"

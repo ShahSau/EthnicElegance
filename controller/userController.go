@@ -340,21 +340,126 @@ func EditName(c *gin.Context) {
 }
 
 func AddToFavorite(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Add to Favorite",
-	})
+	var req struct {
+		Email     string `json:"email" bson:"email"`
+		ProductId string `json:"productId" bson:"productId"`
+	}
+
+	defer c.Request.Body.Close()
+
+	// binding the request body to address
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+
+	var dbUser types.User
+
+	// checking if user exists
+	emailExists := userCollection.FindOne(c, bson.M{"email": req.Email}).Decode(&dbUser)
+
+	if emailExists != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "email not found"})
+		return
+	}
+	// updating the favourite
+	_, updateErr := userCollection.UpdateOne(c, bson.M{"email": req.Email}, bson.M{"$push": bson.M{"favourite": req.ProductId}})
+
+	if updateErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": updateErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "Added to Favorite"})
 }
 
 func RemoveFromFavorite(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Remove from Favorite",
-	})
+	var req struct {
+		Email     string `json:"email" bson:"email"`
+		ProductId string `json:"productId" bson:"productId"`
+	}
+
+	defer c.Request.Body.Close()
+
+	// binding the request body to address
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+
+	var dbUser types.User
+
+	// checking if user exists
+	emailExists := userCollection.FindOne(c, bson.M{"email": req.Email}).Decode(&dbUser)
+
+	if emailExists != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "email not found"})
+		return
+	}
+	// updating the favourite
+	_, updateErr := userCollection.UpdateOne(c, bson.M{"email": req.Email}, bson.M{"$pull": bson.M{"favourite": req.ProductId}})
+
+	if updateErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": updateErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "Removed from Favorite"})
 }
 
 func ListFavorite(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "List Favorite",
-	})
+	var req struct {
+		Email string `json:"email" bson:"email"`
+	}
+
+	defer c.Request.Body.Close()
+
+	// binding the request body to address
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+
+	var dbUser types.User
+
+	// checking if user exists
+	emailExists := userCollection.FindOne(c, bson.M{"email": req.Email}).Decode(&dbUser)
+
+	if emailExists != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "email not found"})
+		return
+	}
+
+	// getting the favourite
+	// for results.Next(c.Request.Context()) {
+	// 	var singleUser types.User
+	// 	if err = results.Decode(&singleUser); err != nil {
+	// 		c.JSON(http.StatusInternalServerError, gin.H{"error": true, "message": err.Error()})
+	// 	}
+
+	// 	users = append(users, singleUser)
+	// }
+	var allFav []types.Product
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+	for _, v := range dbUser.Favourite {
+		fmt.Println(v)
+		var singleProduct types.Product
+		productCollection.FindOne(c, bson.M{"id": v}).Decode(&singleProduct)
+		allFav = append(allFav, singleProduct)
+	}
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success", "data": allFav})
 }
 
 func AddToCart(c *gin.Context) {
