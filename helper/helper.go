@@ -58,3 +58,7 @@ func IsUserAdmin(c *gin.Context, email string) (bool, error) {
 	return true, nil
 
 }
+
+// func GenerateID() string {
+// 	return bson.NewObjectID().Hex()
+// }

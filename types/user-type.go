@@ -35,3 +35,30 @@ type Login struct {
 	Email    string `json:"email" bson:"email"`
 	Password string `json:"password" bson:"password"`
 }
+
+type Coupon struct {
+	ID       primitive.ObjectID `json:"id"`
+	Name     string             `json:"name"`
+	Discount int                `json:"discount"`
+	Expiry   string             `json:"expiry"`
+}
+
+type Product struct {
+	ID          primitive.ObjectID `json:"id"`
+	Name        string             `json:"name"`
+	Price       int                `json:"price"`
+	Description string             `json:"description"`
+	Images      string             `json:"images"`
+	Rating      float64            `json:"rating"`
+	Stock       int                `json:"stock"`
+	Keywords    []string           `json:"keywords"`
+	NumRating   int                `json:"num_rating"`
+	Commnets    []Comment          `json:"comments"`
+	CategoryId  string             `json:"category_id"`
+}
+
+type Comment struct {
+	UserId   string `json:"user_id"`
+	UserName string `json:"user_name"`
+	Comment  string `json:"comment"`
+}

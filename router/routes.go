@@ -60,4 +60,8 @@ var adminRoutes = Routes{
 	Route{"Delete Category", http.MethodDelete, constant.DeleteCategoryRoute, controller.DeleteCategory},
 	Route{"Add coupons", http.MethodPost, constant.AddCouponRoute, controller.AddCoupon},
 	Route{"Delete coupons", http.MethodDelete, constant.DeleteCouponRoute, controller.DeleteCoupon},
+	Route{"List Coupons", http.MethodGet, constant.ListCouponRoute, controller.ListCoupons},
+	Route{"List all products", http.MethodGet, constant.ListProductRoute, controller.ListProducts},
+	Route{"List all orders", http.MethodGet, constant.ListOrders, controller.ListAllOrders},
+	Route{"Add Stock", http.MethodPut, constant.UpdateStockRoute, controller.AddStock},
 }
