@@ -29,7 +29,6 @@ var productGlobalRoutes = Routes{
 	Route{"Search Product", http.MethodGet, constant.SearchProductRoute, controller.SearchProductController},
 	Route{"List Category", http.MethodGet, constant.ListCategoryRoute, controller.ListCategoryController},
 	Route{"List Single Product", http.MethodGet, constant.ListSingleProductRoute, controller.ListSingleProductController},
-	Route{"Get Product Link", http.MethodGet, constant.GetProductLinkRoute, controller.GetProductLink},
 }
 
 var userAuthRoutes = Routes{
@@ -61,7 +60,7 @@ var adminRoutes = Routes{
 	Route{"Add coupons", http.MethodPost, constant.AddCouponRoute, controller.AddCoupon},
 	Route{"Delete coupons", http.MethodDelete, constant.DeleteCouponRoute, controller.DeleteCoupon},
 	Route{"List Coupons", http.MethodGet, constant.ListCouponRoute, controller.ListCoupons},
-	Route{"List all products", http.MethodGet, constant.ListProductRoute, controller.ListProducts},
+	Route{"List all products", http.MethodGet, constant.ListProductRouteAdmin, controller.ListProducts},
 	Route{"List all orders", http.MethodGet, constant.ListOrders, controller.ListAllOrders},
 	Route{"Add Stock", http.MethodPut, constant.UpdateStockRoute, controller.AddStock},
 }

@@ -21,7 +21,8 @@ const (
 
 	// product and adminroutes
 	RegisterProductRoute    = "/product-register"
-	ListProductRoute        = "/list-products"
+	ListProductRoute        = "/products"
+	ListProductRouteAdmin   = "/list-products-admin"
 	ListOrders              = "/list-orders"
 	ListCategoryRoute       = "/list-category"
 	ListSingleProductRoute  = "/product/:id"

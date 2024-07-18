@@ -108,8 +108,8 @@ func (r routes) EcommerceAdmin(rg *gin.RouterGroup) {
  *	Function for grouping product global routes
  */
 func (r routes) EcommerceGlobalProductRoutes(rg *gin.RouterGroup) {
-	orderRouteGrouping := rg.Group("/ecommerce-product")
-	orderRouteGrouping.Use(CORSMiddleware())
+	orderRouteGrouping := rg.Group("/ecommerce")
+	// orderRouteGrouping.Use(CORSMiddleware())
 	for _, route := range productGlobalRoutes {
 		switch route.Method {
 		case "GET":

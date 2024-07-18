@@ -62,3 +62,8 @@ type Comment struct {
 	UserName string `json:"user_name"`
 	Comment  string `json:"comment"`
 }
+
+type Category struct {
+	ID       primitive.ObjectID `json:"id"`
+	Category string             `json:"category"`
+}
