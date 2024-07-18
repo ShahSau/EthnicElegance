@@ -14,22 +14,33 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// @Summary List all users
+// @Description List all users from the database by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Param email header string true "Email of the user"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/users [get]
 func ListAllUsers(c *gin.Context) {
-	var req struct {
-		Email string `json:"email"`
-	}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(400, gin.H{
-			"message": "Invalid request",
-		})
-		return
-	}
+	// var req struct {
+	// 	Email string `json:"email"`
+	// }
+	// if err := c.ShouldBindJSON(&req); err != nil {
+	// 	c.JSON(400, gin.H{
+	// 		"message": "Invalid request",
+	// 	})
+	// 	return
+	// }
+
+	email := c.Param("email")
+	fmt.Println(email)
 
 	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
 
 	// checking is admin or not
 
-	isAdmin, err := helper.IsUserAdmin(c, req.Email)
+	isAdmin, err := helper.IsUserAdmin(c, email)
 	fmt.Println(isAdmin, err)
 
 	if !isAdmin {
