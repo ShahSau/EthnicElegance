@@ -12,17 +12,11 @@ paths:
       summary: User Signup
       tags:
       - User
-  /v1/ecommerce/users:
-    get:
+  /v1/ecommerce/block-user:
+    put:
       consumes:
       - application/json
-      description: List all users from the database by admin
-      parameters:
-      - description: Email of the user
-        in: header
-        name: email
-        required: true
-        type: string
+      description: block user by the admin
       produces:
       - application/json
       responses:
@@ -30,6 +24,277 @@ paths:
           description: OK
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Block user
+      tags:
+      - Admin
+  /v1/ecommerce/category:
+    post:
+      consumes:
+      - application/json
+      description: Add category by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add Category
+      tags:
+      - Admin
+  /v1/ecommerce/category/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete category by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Category
+      tags:
+      - Admin
+    put:
+      consumes:
+      - application/json
+      description: List all categories from the database by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: List all categories
+      tags:
+      - Admin
+  /v1/ecommerce/coupon:
+    get:
+      consumes:
+      - application/json
+      description: List all coupons from the database by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: List all coupons
+      tags:
+      - Admin
+    post:
+      consumes:
+      - application/json
+      description: Add coupon by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add Coupon
+      tags:
+      - Admin
+  /v1/ecommerce/coupon/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete coupon by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Coupon
+      tags:
+      - Admin
+  /v1/ecommerce/delete-product/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete product by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Product
+      tags:
+      - Admin
+  /v1/ecommerce/list-products-admin:
+    get:
+      consumes:
+      - application/json
+      description: List all products from the database by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: List all products
+      tags:
+      - Admin
+  /v1/ecommerce/offer:
+    get:
+      consumes:
+      - application/json
+      description: List all offers from the database by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: List all offers
+      tags:
+      - Admin
+    post:
+      consumes:
+      - application/json
+      description: Add offer by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add Offer
+      tags:
+      - Admin
+  /v1/ecommerce/offer/:id:
+    put:
+      consumes:
+      - application/json
+      description: Change expiry of the offers by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Change Offer Status
+      tags:
+      - Admin
+  /v1/ecommerce/product-register:
+    post:
+      consumes:
+      - application/json
+      description: Add product by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add Product
+      tags:
+      - Admin
+  /v1/ecommerce/unblock-user:
+    put:
+      consumes:
+      - application/json
+      description: unblock user by the admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: unblock user
+      tags:
+      - Admin
+  /v1/ecommerce/update-product/:id:
+    put:
+      consumes:
+      - application/json
+      description: Update product by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Product
+      tags:
+      - Admin
+  /v1/ecommerce/update-stock/:id:
+    put:
+      consumes:
+      - application/json
+      description: Add stock by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add Stock
+      tags:
+      - Admin
+  /v1/ecommerce/users:
+    get:
+      consumes:
+      - application/json
+      description: List all users from the database by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
       summary: List all users
       tags:
       - Admin

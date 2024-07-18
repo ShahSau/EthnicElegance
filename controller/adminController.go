@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/ShahSau/EthnicElegance/constant"
@@ -19,31 +18,25 @@ import (
 // @Tags Admin
 // @Accept json
 // @Produce json
-// @Param email header string true "Email of the user"
+// @Security ApiKeyAuth
 // @Success 200 {object} string
 // @Router /v1/ecommerce/users [get]
 func ListAllUsers(c *gin.Context) {
-	// var req struct {
-	// 	Email string `json:"email"`
-	// }
-	// if err := c.ShouldBindJSON(&req); err != nil {
-	// 	c.JSON(400, gin.H{
-	// 		"message": "Invalid request",
-	// 	})
-	// 	return
-	// }
-
-	email := c.Param("email")
-	fmt.Println(email)
+	token := c.Request.Header.Get("Authorization")
 
 	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
 
 	// checking is admin or not
+	_, userType, err := helper.VerifyToken(token)
 
-	isAdmin, err := helper.IsUserAdmin(c, email)
-	fmt.Println(isAdmin, err)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 
-	if !isAdmin {
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -80,9 +73,16 @@ func ListAllUsers(c *gin.Context) {
 
 }
 
+// @Summary Block user
+// @Description block user by the admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/block-user [put]
 func BlockUser(c *gin.Context) {
 	var req struct {
-		Email     string `json:"email"`
 		UserEmail string `json:"user_email"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -94,10 +94,17 @@ func BlockUser(c *gin.Context) {
 	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
 
 	// checking is admin or not
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
 
-	isAdmin, err := helper.IsUserAdmin(c, req.Email)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 
-	if !isAdmin {
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -118,9 +125,16 @@ func BlockUser(c *gin.Context) {
 
 }
 
+// @Summary unblock user
+// @Description unblock user by the admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/unblock-user [put]
 func UnblockUser(c *gin.Context) {
 	var req struct {
-		Email     string `json:"email"`
 		UserEmail string `json:"user_email"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -132,16 +146,23 @@ func UnblockUser(c *gin.Context) {
 	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
 
 	// checking is admin or not
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
 
-	isAdmin, err := helper.IsUserAdmin(c, req.Email)
-	fmt.Println(isAdmin, err)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 
-	if !isAdmin {
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
 		return
 	}
+
 	var dbUser types.User
 	err = userCollection.FindOne(c.Request.Context(), bson.M{"email": req.UserEmail}).Decode(&dbUser)
 	if err != nil {
@@ -169,9 +190,16 @@ func UnblockUser(c *gin.Context) {
 	})
 }
 
+// @Summary Add Product
+// @Description Add product by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/product-register [post]
 func RegisterProduct(c *gin.Context) {
 	var req struct {
-		Email       string          `json:"email"`
 		Name        string          `json:"name"`
 		Price       int             `json:"price"`
 		Description string          `json:"description"`
@@ -192,10 +220,18 @@ func RegisterProduct(c *gin.Context) {
 	}
 
 	// checking is admin or not
+	token := c.Request.Header.Get("Authorization")
 
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+	_, userType, err := helper.VerifyToken(token)
 
-	if !isAdmin {
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -220,9 +256,16 @@ func RegisterProduct(c *gin.Context) {
 
 }
 
+// @Summary Update Product
+// @Description Update product by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/update-product/:id [put]
 func UpdateProduct(c *gin.Context) {
 	var req struct {
-		Email       string          `json:"email"`
 		Name        string          `json:"name"`
 		Price       int             `json:"price"`
 		Description string          `json:"description"`
@@ -244,10 +287,17 @@ func UpdateProduct(c *gin.Context) {
 	id := c.Param("id")
 
 	// checking is admin or not
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
 
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 
-	if !isAdmin {
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -256,7 +306,7 @@ func UpdateProduct(c *gin.Context) {
 
 	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
 
-	_, err := productCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$set": bson.M{"name": req.Name, "price": req.Price, "description": req.Description, "images": req.Images, "rating": req.Rating, "stock": req.Stock, "keywords": req.Keywords, "num_rating": req.NumRating, "comments": req.Commnets, "category_id": req.CategoryId}})
+	_, err = productCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$set": bson.M{"name": req.Name, "price": req.Price, "description": req.Description, "images": req.Images, "rating": req.Rating, "stock": req.Stock, "keywords": req.Keywords, "num_rating": req.NumRating, "comments": req.Commnets, "category_id": req.CategoryId}})
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -270,24 +320,30 @@ func UpdateProduct(c *gin.Context) {
 	})
 }
 
+// @Summary Delete Product
+// @Description Delete product by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/delete-product/:id [delete]
 func DeleteProduct(c *gin.Context) {
-	var req struct {
-		Email string `json:"email"`
-	}
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(400, gin.H{
-			"message": "Invalid request",
-		})
-		return
-	}
 	id := c.Param("id")
 
 	// checking is admin or not
 
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
 
-	if !isAdmin {
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -296,7 +352,7 @@ func DeleteProduct(c *gin.Context) {
 
 	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
 
-	_, err := productCollection.DeleteOne(c.Request.Context(), bson.M{"id": id})
+	_, err = productCollection.DeleteOne(c.Request.Context(), bson.M{"id": id})
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -308,26 +364,30 @@ func DeleteProduct(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Product deleted",
 	})
-
 }
 
+// @Summary List all products
+// @Description List all products from the database by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/list-products-admin [get]
 func ListProducts(c *gin.Context) {
-	var req struct {
-		Email string `json:"email"`
-	}
+	// checking is admin or not
 
-	if err := c.ShouldBindJSON(&req); err != nil {
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
 		c.JSON(400, gin.H{
-			"message": "Invalid request",
+			"message": err.Error(),
 		})
 		return
 	}
 
-	// checking is admin or not
-
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
-
-	if !isAdmin {
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -366,9 +426,16 @@ func ListProducts(c *gin.Context) {
 
 }
 
+// @Summary Add Category
+// @Description Add category by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/category [post]
 func AddCategory(c *gin.Context) {
 	var req struct {
-		Email    string `json:"email"`
 		Category string `json:"category"`
 	}
 
@@ -380,10 +447,18 @@ func AddCategory(c *gin.Context) {
 	}
 
 	// checking is admin or not
+	token := c.Request.Header.Get("Authorization")
 
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+	_, userType, err := helper.VerifyToken(token)
 
-	if !isAdmin {
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -408,9 +483,16 @@ func AddCategory(c *gin.Context) {
 
 }
 
+// @Summary List all categories
+// @Description List all categories from the database by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/category/:id [put]
 func UpdateCategory(c *gin.Context) {
 	var req struct {
-		Email    string `json:"email"`
 		Category string `json:"category"`
 	}
 
@@ -423,10 +505,17 @@ func UpdateCategory(c *gin.Context) {
 	id := c.Param("id")
 
 	// checking is admin or not
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
 
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 
-	if !isAdmin {
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -435,7 +524,7 @@ func UpdateCategory(c *gin.Context) {
 
 	var categoryCollection *mongo.Collection = database.GetCollection(database.DB, constant.CategoryCollection)
 
-	_, err := categoryCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$set": bson.M{"category": req.Category}})
+	_, err = categoryCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$set": bson.M{"category": req.Category}})
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -450,24 +539,30 @@ func UpdateCategory(c *gin.Context) {
 
 }
 
+// @Summary Delete Category
+// @Description Delete category by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/category/:id [delete]
 func DeleteCategory(c *gin.Context) {
-	var req struct {
-		Email string `json:"email"`
-	}
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(400, gin.H{
-			"message": "Invalid request",
-		})
-		return
-	}
 	id := c.Param("id")
 
 	// checking is admin or not
 
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
 
-	if !isAdmin {
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -476,7 +571,7 @@ func DeleteCategory(c *gin.Context) {
 
 	var categoryCollection *mongo.Collection = database.GetCollection(database.DB, constant.CategoryCollection)
 
-	_, err := categoryCollection.DeleteOne(c.Request.Context(), bson.M{"id": id})
+	_, err = categoryCollection.DeleteOne(c.Request.Context(), bson.M{"id": id})
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -490,9 +585,16 @@ func DeleteCategory(c *gin.Context) {
 	})
 }
 
+// @Summary Add Coupon
+// @Description Add coupon by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/coupon [post]
 func AddCoupon(c *gin.Context) {
 	var req struct {
-		Email    string `json:"email"`
 		Name     string `json:"name"`
 		Discount int    `json:"discount"`
 		Expiry   string `json:"expiry"`
@@ -507,9 +609,17 @@ func AddCoupon(c *gin.Context) {
 
 	// checking is admin or not
 
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
 
-	if !isAdmin {
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -534,24 +644,30 @@ func AddCoupon(c *gin.Context) {
 
 }
 
+// @Summary Delete Coupon
+// @Description Delete coupon by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/coupon/:id [delete]
 func DeleteCoupon(c *gin.Context) {
-	var req struct {
-		Email string `json:"email"`
-	}
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(400, gin.H{
-			"message": "Invalid request",
-		})
-		return
-	}
 	id := c.Param("id")
 
 	// checking is admin or not
 
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
 
-	if !isAdmin {
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -560,7 +676,7 @@ func DeleteCoupon(c *gin.Context) {
 
 	var couponCollection *mongo.Collection = database.GetCollection(database.DB, constant.CouponCollection)
 
-	_, err := couponCollection.DeleteOne(c.Request.Context(), bson.M{"id": id})
+	_, err = couponCollection.DeleteOne(c.Request.Context(), bson.M{"id": id})
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -575,23 +691,28 @@ func DeleteCoupon(c *gin.Context) {
 
 }
 
+// @Summary List all coupons
+// @Description List all coupons from the database by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/coupon [get]
 func ListCoupons(c *gin.Context) {
-	var req struct {
-		Email string `json:"email"`
-	}
 
-	if err := c.ShouldBindJSON(&req); err != nil {
+	// checking is admin or not
+	token := c.Request.Header.Get("Authorization")
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
 		c.JSON(400, gin.H{
-			"message": "Invalid request",
+			"message": err.Error(),
 		})
 		return
 	}
 
-	// checking is admin or not
-
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
-
-	if !isAdmin {
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -633,10 +754,17 @@ func ListCoupons(c *gin.Context) {
 func ListAllOrders(c *gin.Context) {
 }
 
+// @Summary Add Stock
+// @Description Add stock by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/update-stock/:id [put]
 func AddStock(c *gin.Context) {
 	var req struct {
-		Email string `json:"email"`
-		Stock int    `json:"stock"`
+		Stock int `json:"stock"`
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -649,9 +777,18 @@ func AddStock(c *gin.Context) {
 
 	// checking is admin or not
 
-	isAdmin, _ := helper.IsUserAdmin(c, req.Email)
+	token := c.Request.Header.Get("Authorization")
 
-	if !isAdmin {
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
 		c.JSON(400, gin.H{
 			"message": "User is not an admin",
 		})
@@ -660,7 +797,7 @@ func AddStock(c *gin.Context) {
 
 	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
 
-	_, err := productCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$inc": bson.M{"stock": req.Stock}})
+	_, err = productCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$inc": bson.M{"stock": req.Stock}})
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -671,6 +808,169 @@ func AddStock(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message": "Stock updated",
+	})
+
+}
+
+// @Summary Add Offer
+// @Description Add offer by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/offer [post]
+func AddOffer(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+	var req struct {
+		CategoryId int  `json:"category_id"`
+		Discount   int  `json:"discount"`
+		Expiry     bool `json:"expiry"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	// checking is admin or not
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var offerCollection *mongo.Collection = database.GetCollection(database.DB, constant.OfferCollection)
+
+	offer, err := offerCollection.InsertOne(c.Request.Context(), bson.M{"category_id": req.CategoryId, "discount": req.Discount, "expiry": req.Expiry, "id": primitive.NewObjectID().Hex()})
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error adding offer",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Offer added",
+		"offer":   offer,
+	})
+}
+
+// @Summary List all offers
+// @Description List all offers from the database by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/offer [get]
+func ListAllOffers(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	// checking is admin or not
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var offerCollection *mongo.Collection = database.GetCollection(database.DB, constant.OfferCollection)
+
+	results, err := offerCollection.Find(c.Request.Context(), bson.M{}, nil)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error fetching offers",
+		})
+		return
+	}
+
+	defer results.Close(c.Request.Context())
+
+	var offers []types.Offer
+
+	for results.Next(c.Request.Context()) {
+		var singleOffer types.Offer
+		if err = results.Decode(&singleOffer); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": true, "message": err.Error()})
+		}
+
+		offers = append(offers, singleOffer)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Offers fetched",
+		"offers":  offers,
+		"error":   false,
+	})
+}
+
+// @Summary Change Offer Status
+// @Description Change expiry of the offers by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/offer/:id [put]
+func ChangeOffersStatus(c *gin.Context) {
+	id := c.Param("id")
+	token := c.Request.Header.Get("Authorization")
+
+	// checking is admin or not
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var offerCollection *mongo.Collection = database.GetCollection(database.DB, constant.OfferCollection)
+
+	var dbOffer types.Offer
+	_, err = offerCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$set": bson.M{"expiry": !dbOffer.Expiry}})
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error changing offer status",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Offer status changed",
 	})
 
 }
