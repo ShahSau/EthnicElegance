@@ -73,3 +73,19 @@ type Offer struct {
 	Discount   int  `json:"discount"`
 	Expiry     bool `json:"expiry"`
 }
+
+type AddressData struct {
+	Address string `json:"address" bson:"address"`
+	Email   string `json:"email" bson:"email"`
+}
+
+type UpdatePassword struct {
+	Email       string `json:"email" bson:"email"`
+	OldPassword string `json:"oldPassword" bson:"oldPassword"`
+	NewPassword string `json:"newPassword" bson:"newPassword"`
+}
+
+type NameData struct {
+	Name  string `json:"name" bson:"name"`
+	Email string `json:"email" bson:"email"`
+}

@@ -1,15 +1,171 @@
+definitions:
+  types.AddressData:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+    type: object
+  types.Login:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  types.NameData:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+  types.UpdatePassword:
+    properties:
+      email:
+        type: string
+      newPassword:
+        type: string
+      oldPassword:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
-  /users/signup:
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: List all categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: List all categories
+      tags:
+      - User
+  /product/{id}:
+    get:
+      consumes:
+      - application/json
+      description: List single product by id
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: List single product by id
+      tags:
+      - User
+  /product/link:
+    get:
+      consumes:
+      - application/json
+      description: Get product link
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get product link
+      tags:
+      - User
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: List all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: List all products
+      tags:
+      - User
+  /search:
+    get:
+      consumes:
+      - application/json
+      description: Search product
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Search product
+      tags:
+      - User
+  /v1/ecommerce/address:
     post:
       consumes:
       - application/json
-      description: user can signup by giving their details
+      description: user can add address
+      parameters:
+      - description: address
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/types.AddressData'
       produces:
       - application/json
-      responses: {}
-      summary: User Signup
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add Address
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: user can edit address
+      parameters:
+      - description: address
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/types.AddressData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Edit Address
       tags:
       - User
   /v1/ecommerce/block-user:
@@ -146,6 +302,67 @@ paths:
       summary: Delete Product
       tags:
       - Admin
+  /v1/ecommerce/favorite:
+    get:
+      consumes:
+      - application/json
+      description: user can list their favorite
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: List Favorite
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: user can add product to their favorite
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: productId
+        in: body
+        name: productId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add to Favorite
+      tags:
+      - User
   /v1/ecommerce/list-products-admin:
     get:
       consumes:
@@ -163,6 +380,79 @@ paths:
       summary: List all products
       tags:
       - Admin
+  /v1/ecommerce/login:
+    post:
+      consumes:
+      - application/json
+      description: user can login by giving their email and password
+      parameters:
+      - description: login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/types.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: User Login
+      tags:
+      - User
+  /v1/ecommerce/logout:
+    post:
+      consumes:
+      - application/json
+      description: user can logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: User Logout
+      tags:
+      - User
+  /v1/ecommerce/name:
+    put:
+      consumes:
+      - application/json
+      description: user can update their name
+      parameters:
+      - description: name
+        in: body
+        name: name
+        required: true
+        schema:
+          $ref: '#/definitions/types.NameData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: update name
+      tags:
+      - User
   /v1/ecommerce/offer:
     get:
       consumes:
@@ -230,6 +520,59 @@ paths:
       summary: Add Product
       tags:
       - Admin
+  /v1/ecommerce/remove-favorite:
+    post:
+      consumes:
+      - application/json
+      description: user can remove product from their favorite
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: productId
+        in: body
+        name: productId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Remove from Favorite
+      tags:
+      - User
+  /v1/ecommerce/signup:
+    post:
+      consumes:
+      - application/json
+      description: user can signup by giving their details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: User Signup
+      tags:
+      - User
   /v1/ecommerce/unblock-user:
     put:
       consumes:
@@ -281,6 +624,34 @@ paths:
       summary: Add Stock
       tags:
       - Admin
+  /v1/ecommerce/update-user:
+    put:
+      consumes:
+      - application/json
+      description: user can update their password
+      parameters:
+      - description: updatePassword
+        in: body
+        name: updatePassword
+        required: true
+        schema:
+          $ref: '#/definitions/types.UpdatePassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: update password
+      tags:
+      - User
   /v1/ecommerce/users:
     get:
       consumes:

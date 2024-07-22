@@ -11,6 +11,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// @Summary List all products
+// @Description List all products
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object}  string
+// @Router /products [get]
 func ListProductsController(c *gin.Context) {
 
 	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
@@ -41,12 +48,26 @@ func ListProductsController(c *gin.Context) {
 	})
 }
 
+// @Summary Search product
+// @Description Search product
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object}  string
+// @Router /search [get]
 func SearchProductController(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Search Product",
 	})
 }
 
+// @Summary List all categories
+// @Description List all categories
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object}  string
+// @Router /categories [get]
 func ListCategoryController(c *gin.Context) {
 	var categoryCollection *mongo.Collection = database.GetCollection(database.DB, constant.CategoryCollection)
 
@@ -74,6 +95,14 @@ func ListCategoryController(c *gin.Context) {
 	})
 }
 
+// @Summary List single product by id
+// @Description List single product by id
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param id path string true "Product ID"
+// @Success 200 {object}  string
+// @Router /product/{id} [get]
 func ListSingleProductController(c *gin.Context) {
 	Id := c.Param("id")
 
@@ -95,6 +124,13 @@ func ListSingleProductController(c *gin.Context) {
 	})
 }
 
+// @Summary Get product link
+// @Description Get product link
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object}  string
+// @Router /product/link [get]
 func GetProductLink(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Get Product Link",

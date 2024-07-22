@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -28,10 +27,10 @@ type JwtClaim struct {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
-// // @Param			signup  body  models.UserDetails  true	"signup"
-// // @Success		200	{object}	response.Response{}
-// // @Failure		500	{object}	response.Response{}
-// @Router			/users/signup [post]
+// // @Param			signup  body  types.UserClient  true	"signup"
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/signup [post]
 func RegisterUser(c *gin.Context) {
 	var userClient types.UserClient
 	var dbUser types.User
@@ -99,6 +98,15 @@ func RegisterUser(c *gin.Context) {
 
 }
 
+// @Summary		User Login
+// @Description	user can login by giving their email and password
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			login  body  types.Login  true	"login"
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/login [post]
 func UserLogin(c *gin.Context) {
 	var loginReq types.Login
 
@@ -144,13 +152,29 @@ func UserLogin(c *gin.Context) {
 
 }
 
+// @Summary		User Logout
+// @Description	user can logout
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/logout [post]
 func SignOut(c *gin.Context) {
-	use := c.Value("user")
-	fmt.Println("SignOut", use)
-	// c.Set("user", "")
+
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
 }
 
+// @Summary		Add Address
+// @Description	user can add address
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			address  body  types.AddressData  true	"address"
+// @Security        ApiKeyAuth
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/address [post]
 func AddAddress(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 
@@ -171,12 +195,7 @@ func AddAddress(c *gin.Context) {
 		return
 	}
 
-	type AddressData struct {
-		Address string `json:"address" bson:"address"`
-		Email   string `json:"email" bson:"email"`
-	}
-
-	var addAddress AddressData
+	var addAddress types.AddressData
 
 	defer c.Request.Body.Close()
 
@@ -212,6 +231,16 @@ func AddAddress(c *gin.Context) {
 
 }
 
+// @Summary		Edit Address
+// @Description	user can edit address
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			address  body  types.AddressData  true	"address"
+// @Security        ApiKeyAuth
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/address [put]
 func EditAddress(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 
@@ -222,12 +251,7 @@ func EditAddress(c *gin.Context) {
 		return
 	}
 
-	type AddressData struct {
-		Address string `json:"address" bson:"address"`
-		Email   string `json:"email" bson:"email"`
-	}
-
-	var editAddress AddressData
+	var editAddress types.AddressData
 
 	defer c.Request.Body.Close()
 
@@ -262,6 +286,16 @@ func EditAddress(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
 }
 
+// @Summary		update password
+// @Description	user can update their password
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			updatePassword  body  types.UpdatePassword  true	"updatePassword"
+// @Security        ApiKeyAuth
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/update-user [put]
 func UpdateUser(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 
@@ -272,13 +306,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	type UpdatePassword struct {
-		Email       string `json:"email" bson:"email"`
-		OldPassword string `json:"oldPassword" bson:"oldPassword"`
-		NewPassword string `json:"newPassword" bson:"newPassword"`
-	}
-
-	var updatePassword UpdatePassword
+	var updatePassword types.UpdatePassword
 
 	defer c.Request.Body.Close()
 
@@ -319,6 +347,16 @@ func UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
 }
 
+// @Summary		update name
+// @Description	user can update their name
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			name  body  types.NameData  true	"name"
+// @Security        ApiKeyAuth
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/name [put]
 func EditName(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 
@@ -329,12 +367,7 @@ func EditName(c *gin.Context) {
 		return
 	}
 
-	type NameData struct {
-		Name  string `json:"name" bson:"name"`
-		Email string `json:"email" bson:"email"`
-	}
-
-	var editName NameData
+	var editName types.NameData
 
 	defer c.Request.Body.Close()
 
@@ -369,6 +402,17 @@ func EditName(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
 }
 
+// @Summary		Add to Favorite
+// @Description	user can add product to their favorite
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			email  body  string  true	"email"
+// @Param			productId  body  string  true	"productId"
+// @Security        ApiKeyAuth
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/favorite [post]
 func AddToFavorite(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 
@@ -416,6 +460,17 @@ func AddToFavorite(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "Added to Favorite"})
 }
 
+// @Summary		Remove from Favorite
+// @Description	user can remove product from their favorite
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			email  body  string  true	"email"
+// @Param			productId  body  string  true	"productId"
+// @Security        ApiKeyAuth
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/remove-favorite [post]
 func RemoveFromFavorite(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 
@@ -463,6 +518,16 @@ func RemoveFromFavorite(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "Removed from Favorite"})
 }
 
+// @Summary		List Favorite
+// @Description	user can list their favorite
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			email  body  string  true	"email"
+// @Security        ApiKeyAuth
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/favorite [get]
 func ListFavorite(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 
