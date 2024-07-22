@@ -24,6 +24,13 @@ import (
 func ListAllUsers(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
 
 	// checking is admin or not
@@ -95,6 +102,14 @@ func BlockUser(c *gin.Context) {
 
 	// checking is admin or not
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -147,6 +162,14 @@ func UnblockUser(c *gin.Context) {
 
 	// checking is admin or not
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -222,6 +245,13 @@ func RegisterProduct(c *gin.Context) {
 	// checking is admin or not
 	token := c.Request.Header.Get("Authorization")
 
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -288,6 +318,14 @@ func UpdateProduct(c *gin.Context) {
 
 	// checking is admin or not
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -334,6 +372,14 @@ func DeleteProduct(c *gin.Context) {
 	// checking is admin or not
 
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -378,6 +424,14 @@ func ListProducts(c *gin.Context) {
 	// checking is admin or not
 
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -449,6 +503,13 @@ func AddCategory(c *gin.Context) {
 	// checking is admin or not
 	token := c.Request.Header.Get("Authorization")
 
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -506,6 +567,12 @@ func UpdateCategory(c *gin.Context) {
 
 	// checking is admin or not
 	token := c.Request.Header.Get("Authorization")
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -553,6 +620,14 @@ func DeleteCategory(c *gin.Context) {
 	// checking is admin or not
 
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -610,6 +685,14 @@ func AddCoupon(c *gin.Context) {
 	// checking is admin or not
 
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -658,6 +741,14 @@ func DeleteCoupon(c *gin.Context) {
 	// checking is admin or not
 
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -703,6 +794,14 @@ func ListCoupons(c *gin.Context) {
 
 	// checking is admin or not
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -779,6 +878,13 @@ func AddStock(c *gin.Context) {
 
 	token := c.Request.Header.Get("Authorization")
 
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	_, userType, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -822,6 +928,14 @@ func AddStock(c *gin.Context) {
 // @Router /v1/ecommerce/offer [post]
 func AddOffer(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	var req struct {
 		CategoryId int  `json:"category_id"`
 		Discount   int  `json:"discount"`
@@ -879,6 +993,13 @@ func AddOffer(c *gin.Context) {
 // @Router /v1/ecommerce/offer [get]
 func ListAllOffers(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
 
 	// checking is admin or not
 	_, userType, err := helper.VerifyToken(token)
@@ -939,6 +1060,13 @@ func ListAllOffers(c *gin.Context) {
 func ChangeOffersStatus(c *gin.Context) {
 	id := c.Param("id")
 	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
 
 	// checking is admin or not
 	_, userType, err := helper.VerifyToken(token)

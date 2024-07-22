@@ -152,6 +152,25 @@ func SignOut(c *gin.Context) {
 }
 
 func AddAddress(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
+	// checking is admin or not
+	_, _, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
 	type AddressData struct {
 		Address string `json:"address" bson:"address"`
 		Email   string `json:"email" bson:"email"`
@@ -194,6 +213,15 @@ func AddAddress(c *gin.Context) {
 }
 
 func EditAddress(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	type AddressData struct {
 		Address string `json:"address" bson:"address"`
 		Email   string `json:"email" bson:"email"`
@@ -235,6 +263,15 @@ func EditAddress(c *gin.Context) {
 }
 
 func UpdateUser(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	type UpdatePassword struct {
 		Email       string `json:"email" bson:"email"`
 		OldPassword string `json:"oldPassword" bson:"oldPassword"`
@@ -283,6 +320,15 @@ func UpdateUser(c *gin.Context) {
 }
 
 func EditName(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	type NameData struct {
 		Name  string `json:"name" bson:"name"`
 		Email string `json:"email" bson:"email"`
@@ -324,6 +370,15 @@ func EditName(c *gin.Context) {
 }
 
 func AddToFavorite(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	var req struct {
 		Email     string `json:"email" bson:"email"`
 		ProductId string `json:"productId" bson:"productId"`
@@ -362,6 +417,15 @@ func AddToFavorite(c *gin.Context) {
 }
 
 func RemoveFromFavorite(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	var req struct {
 		Email     string `json:"email" bson:"email"`
 		ProductId string `json:"productId" bson:"productId"`
@@ -400,6 +464,15 @@ func RemoveFromFavorite(c *gin.Context) {
 }
 
 func ListFavorite(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
 	var req struct {
 		Email string `json:"email" bson:"email"`
 	}
@@ -426,19 +499,9 @@ func ListFavorite(c *gin.Context) {
 		return
 	}
 
-	// getting the favourite
-	// for results.Next(c.Request.Context()) {
-	// 	var singleUser types.User
-	// 	if err = results.Decode(&singleUser); err != nil {
-	// 		c.JSON(http.StatusInternalServerError, gin.H{"error": true, "message": err.Error()})
-	// 	}
-
-	// 	users = append(users, singleUser)
-	// }
 	var allFav []types.Product
 	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
 	for _, v := range dbUser.Favourite {
-		fmt.Println(v)
 		var singleProduct types.Product
 		productCollection.FindOne(c, bson.M{"id": v}).Decode(&singleProduct)
 		allFav = append(allFav, singleProduct)
