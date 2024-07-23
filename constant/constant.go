@@ -53,9 +53,11 @@ const (
 	ListCartRoute           = "/cart"
 	EmptyCartRoute          = "/cart/all"
 	ApplyCouponRoute        = "/cart/coupon"
-	GetProductLinkRoute     = "/product-link"
+	GetProductLinkRoute     = "/product-link/:id"
 	AddOfferRoute           = "/offer"
 	UpdateOfferRoute        = "/offer/:id"
+	GiveRatingRoute         = "/rating/:id"
+	CommentOnProductRoute   = "/comment/:id"
 )
 
 const (

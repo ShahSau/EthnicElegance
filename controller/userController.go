@@ -185,7 +185,7 @@ func AddAddress(c *gin.Context) {
 		return
 	}
 
-	// checking is admin or not
+	// verified user
 	_, _, err := helper.VerifyToken(token)
 
 	if err != nil {
@@ -251,6 +251,16 @@ func EditAddress(c *gin.Context) {
 		return
 	}
 
+	// verified user
+	_, _, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
 	var editAddress types.AddressData
 
 	defer c.Request.Body.Close()
@@ -306,6 +316,15 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
+	// verified user
+	_, _, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 	var updatePassword types.UpdatePassword
 
 	defer c.Request.Body.Close()
@@ -367,6 +386,15 @@ func EditName(c *gin.Context) {
 		return
 	}
 
+	// verified user
+	_, _, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 	var editName types.NameData
 
 	defer c.Request.Body.Close()
@@ -419,6 +447,16 @@ func AddToFavorite(c *gin.Context) {
 	if token == "" {
 		c.JSON(400, gin.H{
 			"message": "Token is required",
+		})
+		return
+	}
+
+	// verified user
+	_, _, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
 		})
 		return
 	}
@@ -481,6 +519,16 @@ func RemoveFromFavorite(c *gin.Context) {
 		return
 	}
 
+	// verified user
+	_, _, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
 	var req struct {
 		Email     string `json:"email" bson:"email"`
 		ProductId string `json:"productId" bson:"productId"`
@@ -534,6 +582,16 @@ func ListFavorite(c *gin.Context) {
 	if token == "" {
 		c.JSON(400, gin.H{
 			"message": "Token is required",
+		})
+		return
+	}
+
+	// verified user
+	_, _, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
 		})
 		return
 	}

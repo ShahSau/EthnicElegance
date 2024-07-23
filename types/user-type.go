@@ -53,14 +53,13 @@ type Product struct {
 	Stock       int                `json:"stock"`
 	Keywords    []string           `json:"keywords"`
 	NumRating   int                `json:"num_rating"`
-	Commnets    []Comment          `json:"comments"`
+	Comments    []Comment          `json:"comments"`
 	CategoryId  string             `json:"category_id"`
 }
 
 type Comment struct {
-	UserId   string `json:"user_id"`
-	UserName string `json:"user_name"`
-	Comment  string `json:"comment"`
+	Email   string `json:"email"`
+	Comment string `json:"comment"`
 }
 
 type Category struct {
@@ -88,4 +87,8 @@ type UpdatePassword struct {
 type NameData struct {
 	Name  string `json:"name" bson:"name"`
 	Email string `json:"email" bson:"email"`
+}
+
+type Rating struct {
+	Rating float64 `json:"rating" bson:"rating"`
 }

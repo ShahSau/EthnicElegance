@@ -45,6 +45,9 @@ var userAuthRoutes = Routes{
 	Route{"List Cart", http.MethodGet, constant.ListCartRoute, controller.ListCart},
 	Route{"Empty Cart", http.MethodDelete, constant.EmptyCartRoute, controller.EmptyCart},
 	Route{"Apply Coupon", http.MethodPost, constant.ApplyCouponRoute, controller.ApplyCoupon},
+	Route{"Get Product Link", http.MethodGet, constant.GetProductLinkRoute, controller.GetProductLink},
+	Route{"Give Rating", http.MethodPost, constant.GiveRatingRoute, controller.GiveRating},
+	Route{"Comment on Product", http.MethodPost, constant.CommentOnProductRoute, controller.CommentOnProduct},
 }
 
 var adminRoutes = Routes{

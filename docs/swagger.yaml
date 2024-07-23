@@ -32,72 +32,6 @@ definitions:
 info:
   contact: {}
 paths:
-  /categories:
-    get:
-      consumes:
-      - application/json
-      description: List all categories
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: List all categories
-      tags:
-      - User
-  /product/{id}:
-    get:
-      consumes:
-      - application/json
-      description: List single product by id
-      parameters:
-      - description: Product ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: List single product by id
-      tags:
-      - User
-  /product/link:
-    get:
-      consumes:
-      - application/json
-      description: Get product link
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: Get product link
-      tags:
-      - User
-  /products:
-    get:
-      consumes:
-      - application/json
-      description: List all products
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: List all products
-      tags:
-      - User
   /search:
     get:
       consumes:
@@ -235,6 +169,27 @@ paths:
       summary: List all categories
       tags:
       - Admin
+  /v1/ecommerce/comment/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Comment on product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Comment on product
+      tags:
+      - User
   /v1/ecommerce/coupon:
     get:
       consumes:
@@ -361,6 +316,21 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Add to Favorite
+      tags:
+      - User
+  /v1/ecommerce/list-category:
+    get:
+      consumes:
+      - application/json
+      description: List all categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: List all categories
       tags:
       - User
   /v1/ecommerce/list-products-admin:
@@ -503,6 +473,27 @@ paths:
       summary: Change Offer Status
       tags:
       - Admin
+  /v1/ecommerce/product-link/:id:
+    get:
+      consumes:
+      - application/json
+      description: Get product link
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get product link
+      tags:
+      - User
   /v1/ecommerce/product-register:
     post:
       consumes:
@@ -520,6 +511,63 @@ paths:
       summary: Add Product
       tags:
       - Admin
+  /v1/ecommerce/product/{id}:
+    get:
+      consumes:
+      - application/json
+      description: List single product by id
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: List single product by id
+      tags:
+      - User
+  /v1/ecommerce/products:
+    get:
+      consumes:
+      - application/json
+      description: List all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: List all products
+      tags:
+      - User
+  /v1/ecommerce/rating/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Give rating
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Give rating
+      tags:
+      - User
   /v1/ecommerce/remove-favorite:
     post:
       consumes:
