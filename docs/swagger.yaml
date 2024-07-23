@@ -119,6 +119,74 @@ paths:
       summary: Block user
       tags:
       - Admin
+  /v1/ecommerce/cart:
+    post:
+      consumes:
+      - application/json
+      description: user can add product to their cart
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: productId
+        in: body
+        name: productId
+        required: true
+        schema:
+          type: string
+      - description: quantity
+        in: body
+        name: quantity
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add to cart
+      tags:
+      - User
+  /v1/ecommerce/cart/all:
+    post:
+      consumes:
+      - application/json
+      description: user can empty their cart
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Empty Cart
+      tags:
+      - User
   /v1/ecommerce/category:
     post:
       consumes:

@@ -80,6 +80,7 @@ const (
 	CategoryCollection      = "categories"
 	CouponCollection        = "coupons"
 	OfferCollection         = "offers"
+	CartItemCollection      = "cart_items"
 )
 
 // messages
