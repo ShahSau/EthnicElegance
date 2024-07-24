@@ -338,6 +338,34 @@ paths:
       summary: List all categories
       tags:
       - Admin
+  /v1/ecommerce/checkout:
+    post:
+      consumes:
+      - application/json
+      description: user can checkout their order
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Checkout Order
+      tags:
+      - User
   /v1/ecommerce/comment/{id}:
     post:
       consumes:
@@ -379,7 +407,20 @@ paths:
     post:
       consumes:
       - application/json
-      description: Add coupon by admin
+      description: user can apply coupon to their cart
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: coupon
+        in: body
+        name: coupon
+        required: true
+        schema:
+          type: string
       produces:
       - application/json
       responses:
@@ -387,11 +428,15 @@ paths:
           description: OK
           schema:
             type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
       security:
       - ApiKeyAuth: []
-      summary: Add Coupon
+      summary: Apply Coupon
       tags:
-      - Admin
+      - User
   /v1/ecommerce/coupon/:id:
     delete:
       consumes:

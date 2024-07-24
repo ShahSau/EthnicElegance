@@ -36,7 +36,7 @@ const (
 	EditNameRoute           = "/name"
 	GetSingleUserRoute      = "/user/:id"
 	UpdateUser              = "/update-user"
-	CheckoutRoute           = "/user/:id"
+	CheckoutRoute           = "/checkout"
 	AddToFavoriteRoute      = "/favorite"
 	RemoveFromFavoriteRoute = "/remove-favorite"
 	ListFavoriteRoute       = "/favorite"
@@ -82,6 +82,7 @@ const (
 	CouponCollection        = "coupons"
 	OfferCollection         = "offers"
 	CartItemCollection      = "cart_items"
+	OrderCollection         = "orders"
 )
 
 // messages
