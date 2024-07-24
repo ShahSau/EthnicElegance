@@ -65,6 +65,5 @@ var DB *mongo.Client = ConnectDB()
 // getting database collections
 func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	collection := client.Database("EthnicElegance").Collection(collectionName)
-	fmt.Println("Collection instance created", collection)
 	return collection
 }

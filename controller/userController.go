@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -676,7 +675,6 @@ func AddToCart(c *gin.Context) {
 
 	if emailExists != nil {
 		var product types.Product
-		fmt.Println(addToCart.ProductID)
 
 		err := productCollection.FindOne(c, bson.M{"id": addToCart.ProductID}).Decode(&product)
 
@@ -684,7 +682,7 @@ func AddToCart(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "product not found"})
 			return
 		}
-		fmt.Println(product, "F", addToCart.Quantity)
+
 		// creating the cart object
 		dbCart = types.CartItem{
 			Email:     addToCart.Email,
@@ -745,16 +743,160 @@ func AddToCart(c *gin.Context) {
 
 }
 
-func CheckoutOrder(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Checkout Order",
-	})
+// @Summary		Remove from cart
+// @Description	user can remove product from their cart
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			email  body  string  true	"email"
+// @Param			productId  body  string  true	"productId"
+// @Security        ApiKeyAuth
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/cart/remove [post]
+func RemoveFromCart(c *gin.Context) {
+	var addToCart struct {
+		Email     string `json:"email" bson:"email"`
+		ProductId string `json:"productId" bson:"productId"`
+	}
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
+	defer c.Request.Body.Close()
+
+	// binding the request body to address
+	if err := c.ShouldBindJSON(&addToCart); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	var cartCollection *mongo.Collection = database.GetCollection(database.DB, constant.CartItemCollection)
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+
+	var dbCart types.CartItem
+	var product types.Product
+
+	// get thte product
+	err := productCollection.FindOne(c, bson.M{"id": addToCart.ProductId}).Decode(&product)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "product not found"})
+		return
+	}
+
+	// if user already has products on the cart
+	emailExists := cartCollection.FindOne(c, bson.M{"email": addToCart.Email}).Decode(&dbCart)
+
+	if emailExists != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "cart not found"})
+		return
+	}
+	var numberofItems int
+	//total minus for removed product
+	for _, v := range dbCart.Products {
+		if v.ProductID == addToCart.ProductId {
+			numberofItems = v.Quantity
+		}
+	}
+
+	dbCart.NumItems = dbCart.NumItems - 1
+	dbCart.Total = dbCart.Total - float64(product.Price*numberofItems)
+
+	_, updateErr := cartCollection.UpdateOne(c, bson.M{"email": addToCart.Email}, bson.M{"$pull": bson.M{"products": bson.M{"product_id": addToCart.ProductId}}, "$set": bson.M{"total": dbCart.Total}})
+
+	if updateErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": updateErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
 }
 
-func RemoveFromCart(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Remove from Cart",
-	})
+// @Summary		Update Cart
+// @Description	user can update their cart
+// @Tags			User
+// @Accept			json
+// @Produce		    json
+// @Param			email  body  string  true	"email"
+// @Param			productId  body  string  true	"productId"
+// @Param			quantity  body  int  true	"quantity"
+// @Security        ApiKeyAuth
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/cart/update [post]
+func UpdateCart(c *gin.Context) {
+	var addToCart struct {
+		Email     string `json:"email" bson:"email"`
+		ProductId string `json:"productId" bson:"productId"`
+		Quantity  int    `json:"quantity" bson:"quantity"`
+	}
+
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
+	defer c.Request.Body.Close()
+
+	// binding the request body to address
+	if err := c.ShouldBindJSON(&addToCart); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	var cartCollection *mongo.Collection = database.GetCollection(database.DB, constant.CartItemCollection)
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+
+	var dbCart types.CartItem
+	var product types.Product
+
+	// get the product
+	err := productCollection.FindOne(c, bson.M{"id": addToCart.ProductId}).Decode(&product)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "product not found"})
+		return
+	}
+	// if user already has products on the cart
+	emailExists := cartCollection.FindOne(c, bson.M{"email": addToCart.Email}).Decode(&dbCart)
+
+	if emailExists != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "cart not found"})
+		return
+	}
+
+	numOfItems := 0
+	position := 0
+	for i, v := range dbCart.Products {
+		if v.ProductID == addToCart.ProductId {
+			numOfItems = v.Quantity
+			position = i
+		}
+	}
+
+	dbCart.Products[position].Quantity = addToCart.Quantity
+	dbCart.Total = dbCart.Total - float64(numOfItems*product.Price) + float64(addToCart.Quantity*product.Price)
+	_, updateErr := cartCollection.UpdateOne(c, bson.M{"email": addToCart.Email}, bson.M{"$set": bson.M{"products": dbCart.Products, "total": dbCart.Total}})
+
+	if updateErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": true, "message": updateErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
 }
 
 // @Summary		List Cart
@@ -853,5 +995,11 @@ func EmptyCart(c *gin.Context) {
 func ApplyCoupon(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Apply Coupoun",
+	})
+}
+
+func CheckoutOrder(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Checkout Order",
 	})
 }

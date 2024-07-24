@@ -120,6 +120,33 @@ paths:
       tags:
       - Admin
   /v1/ecommerce/cart:
+    get:
+      consumes:
+      - application/json
+      description: user can list their cart
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: List Cart
+      tags:
+      - User
     post:
       consumes:
       - application/json
@@ -185,6 +212,80 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Empty Cart
+      tags:
+      - User
+  /v1/ecommerce/cart/remove:
+    post:
+      consumes:
+      - application/json
+      description: user can remove product from their cart
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: productId
+        in: body
+        name: productId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Remove from cart
+      tags:
+      - User
+  /v1/ecommerce/cart/update:
+    post:
+      consumes:
+      - application/json
+      description: user can update their cart
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: productId
+        in: body
+        name: productId
+        required: true
+        schema:
+          type: string
+      - description: quantity
+        in: body
+        name: quantity
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Cart
       tags:
       - User
   /v1/ecommerce/category:
