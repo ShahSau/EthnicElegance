@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // @Summary List all products
@@ -47,19 +48,6 @@ func ListProductsController(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"products": products,
-	})
-}
-
-// @Summary Search product
-// @Description Search product
-// @Tags User
-// @Accept json
-// @Produce json
-// @Success 200 {object}  string
-// @Router /search [get]
-func SearchProductController(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Search Product",
 	})
 }
 
@@ -295,4 +283,96 @@ func CommentOnProduct(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Comment added",
 	})
+}
+
+// @Summary Search product
+// @Description Search product
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param search body string true "Search"
+// @Param limit body int true "Limit"
+// @Param page body int true "Page"
+// @Param offset body int true "Offset"
+// @Success 200 {object}  string
+// @Router /v1/ecommerce/search [post]
+func SearchProductController(c *gin.Context) {
+	var reqSearch struct {
+		Search string `json:"search"`
+		Limit  int    `json:"limit"`
+		Page   int    `json:"page"`
+		Offset int    `json:"offset"`
+	}
+
+	err := c.ShouldBindJSON(&reqSearch)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": constant.BadRequestMessage,
+		})
+		return
+	}
+
+	token := c.Request.Header.Get("Authorization")
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+	// verified user
+	_, _, errToken := helper.VerifyToken(token)
+	if errToken != nil {
+		c.JSON(400, gin.H{
+			"message": errToken.Error(),
+		})
+		return
+	}
+
+	skip := reqSearch.Limit * (reqSearch.Page - 1)
+	if reqSearch.Offset > 0 {
+		skip = reqSearch.Offset
+	}
+
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+
+	var products []types.Product
+
+	findOptions := options.Find()
+	findOptions.SetLimit(int64(reqSearch.Limit))
+	findOptions.SetSkip(int64(skip))
+
+	searchFilter := bson.M{}
+	if len(reqSearch.Search) > 3 {
+		searchFilter["$or"] = []bson.M{
+			{"name": bson.M{"$regex": reqSearch.Search, "$options": "i"}},
+			{"description": bson.M{"$regex": reqSearch.Search, "$options": "i"}},
+		}
+	}
+
+	cursor, err := productCollection.Find(context.Background(), searchFilter, findOptions)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": constant.BadRequestMessage,
+		})
+		return
+	}
+
+	count, err := productCollection.CountDocuments(context.Background(), searchFilter)
+
+	defer cursor.Close(context.Background())
+
+	for cursor.Next(context.Background()) {
+		var product types.Product
+		cursor.Decode(&product)
+		if product.Stock > 0 {
+			products = append(products, product)
+		}
+	}
+
+	c.JSON(200, gin.H{
+		"products": products,
+		"total":    count,
+	})
+
 }
