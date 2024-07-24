@@ -24,6 +24,7 @@ const (
 	ListProductRoute        = "/products"
 	ListProductRouteAdmin   = "/list-products-admin"
 	ListOrders              = "/list-orders"
+	UpdateOrder             = "/update-order"
 	ListCategoryRoute       = "/list-category"
 	ListSingleProductRoute  = "/product/:id"
 	SearchProductRoute      = "/search"
@@ -36,7 +37,7 @@ const (
 	EditNameRoute           = "/name"
 	GetSingleUserRoute      = "/user/:id"
 	UpdateUser              = "/update-user"
-	CheckoutRoute           = "/user/:id"
+	CheckoutRoute           = "/checkout"
 	AddToFavoriteRoute      = "/favorite"
 	RemoveFromFavoriteRoute = "/remove-favorite"
 	ListFavoriteRoute       = "/favorite"
@@ -49,7 +50,8 @@ const (
 	AddCouponRoute          = "/coupon"
 	DeleteCouponRoute       = "/coupon/:id"
 	ListCouponRoute         = "/coupon"
-	RemoveFromCartRoute     = "/cart"
+	RemoveFromCartRoute     = "/cart/remove"
+	UpdateCart              = "/cart/update"
 	ListCartRoute           = "/cart"
 	EmptyCartRoute          = "/cart/all"
 	ApplyCouponRoute        = "/cart/coupon"
@@ -80,6 +82,8 @@ const (
 	CategoryCollection      = "categories"
 	CouponCollection        = "coupons"
 	OfferCollection         = "offers"
+	CartItemCollection      = "cart_items"
+	OrderCollection         = "orders"
 )
 
 // messages

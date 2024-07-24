@@ -2,7 +2,6 @@ package helper
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"time"
 
@@ -13,7 +12,6 @@ import (
 )
 
 func CheckUserValidation(u types.UserClient) error {
-	fmt.Println("CheckUserValidation:", u)
 	if u.Email == "" {
 		return errors.New("email can't be empty")
 	}
@@ -76,7 +74,7 @@ func VerifyToken(tokenString string) (string, string, error) {
 	})
 
 	if err != nil {
-		fmt.Print("error in isuseradmin", err)
+
 		return "", "", err
 	}
 

@@ -92,3 +92,32 @@ type NameData struct {
 type Rating struct {
 	Rating float64 `json:"rating" bson:"rating"`
 }
+
+type AddToCart struct {
+	Email     string `json:"email" bson:"email"`
+	ProductID string `json:"product_id" bson:"product_id"`
+	Quantity  int    `json:"quantity" bson:"quantity"`
+}
+
+type CartItem struct {
+	Email     string `json:"email" bson:"email"`
+	Products  []ProductInCart
+	ChekedOut bool    `json:"checked_out" bson:"checked_out"`
+	Total     float64 `json:"total" bson:"total"`
+	NumItems  int     `json:"num_items" bson:"num_items"`
+}
+
+type ProductInCart struct {
+	ProductID string `json:"product_id" bson:"product_id"`
+	Quantity  int    `json:"quantity" bson:"quantity"`
+}
+
+type Order struct {
+	Email     string          `json:"email" bson:"email"`
+	NumItems  int             `json:"num_items" bson:"num_items"`
+	Total     float64         `json:"total" bson:"total"`
+	Products  []ProductInCart `json:"products" bson:"products"`
+	CreatedAt int64           `json:"created_at" bson:"created_at"`
+	UpdatedAt int64           `json:"updated_at" bson:"updated_at"`
+	Deliverd  bool            `json:"deliverd" bson:"deliverd"`
+}
