@@ -24,6 +24,7 @@ const (
 	ListProductRoute        = "/products"
 	ListProductRouteAdmin   = "/list-products-admin"
 	ListOrders              = "/list-orders"
+	UpdateOrder             = "/update-order"
 	ListCategoryRoute       = "/list-category"
 	ListSingleProductRoute  = "/product/:id"
 	SearchProductRoute      = "/search"

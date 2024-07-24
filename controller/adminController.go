@@ -850,9 +850,6 @@ func ListCoupons(c *gin.Context) {
 
 }
 
-func ListAllOrders(c *gin.Context) {
-}
-
 // @Summary Add Stock
 // @Description Add stock by admin
 // @Tags Admin
@@ -1099,6 +1096,123 @@ func ChangeOffersStatus(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message": "Offer status changed",
+	})
+
+}
+
+// @Summary List all orders
+// @Description List all orders from the database by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} string
+// @Router /v1/ecommerce/list-orders [get]
+func ListAllOrders(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
+	// checking is admin or not
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+	var orderCollection *mongo.Collection = database.GetCollection(database.DB, constant.OrderCollection)
+
+	results, err := orderCollection.Find(c.Request.Context(), bson.M{}, nil)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error fetching orders",
+		})
+		return
+	}
+
+	defer results.Close(c.Request.Context())
+
+	var orders []types.Order
+
+	for results.Next(c.Request.Context()) {
+		var singleOrder types.Order
+		if err = results.Decode(&singleOrder); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": true, "message": err.Error()})
+		}
+
+		orders = append(orders, singleOrder)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Orders fetched",
+		"orders":  orders,
+		"error":   false,
+	})
+
+}
+func UpdateOrderStatus(c *gin.Context) {
+	var req struct {
+		Email string `json:"email"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+	var orderCollection *mongo.Collection = database.GetCollection(database.DB, constant.OrderCollection)
+
+	_, err = orderCollection.UpdateOne(c.Request.Context(), bson.M{"email": req.Email}, bson.M{"$set": bson.M{"deliverd": true}})
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error updating order status",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Order status updated",
 	})
 
 }

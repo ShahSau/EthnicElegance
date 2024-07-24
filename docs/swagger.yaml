@@ -547,6 +547,23 @@ paths:
       summary: List all categories
       tags:
       - User
+  /v1/ecommerce/list-orders:
+    get:
+      consumes:
+      - application/json
+      description: List all orders from the database by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: List all orders
+      tags:
+      - Admin
   /v1/ecommerce/list-products-admin:
     get:
       consumes:
