@@ -19,6 +19,7 @@ import (
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/users [get]
 func ListAllUsers(c *gin.Context) {
@@ -86,6 +87,8 @@ func ListAllUsers(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param user_email body string true "User Email"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/block-user [put]
 func BlockUser(c *gin.Context) {
@@ -146,6 +149,8 @@ func BlockUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param user_email body string true "User Email"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/unblock-user [put]
 func UnblockUser(c *gin.Context) {
@@ -219,6 +224,17 @@ func UnblockUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param name body string true "Product Name"
+// @param price body int true "Product Price"
+// @param description body string true "Product Description"
+// @param images body string true "Product Images"
+// @param rating body float64 true "Product Rating"
+// @param stock body int true "Product Stock"
+// @param keywords body []string true "Product Keywords"
+// @param num_rating body int true "Product Number of Ratings"
+// @param comments body []types.Comment true "Product Comments"
+// @param category_id body string true "Product Category ID"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/product-register [post]
 func RegisterProduct(c *gin.Context) {
@@ -292,6 +308,17 @@ func RegisterProduct(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param name body string true "Product Name"
+// @param price body int true "Product Price"
+// @param description body string true "Product Description"
+// @param images body string true "Product Images"
+// @param rating body float64 true "Product Rating"
+// @param stock body int true "Product Stock"
+// @param keywords body []string true "Product Keywords"
+// @param num_rating body int true "Product Number of Ratings"
+// @param comments body []types.Comment true "Product Comments"
+// @param category_id body string true "Product Category ID"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/update-product/:id [put]
 func UpdateProduct(c *gin.Context) {
@@ -364,6 +391,8 @@ func UpdateProduct(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param id path string true "Product ID"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/delete-product/:id [delete]
 func DeleteProduct(c *gin.Context) {
@@ -418,6 +447,7 @@ func DeleteProduct(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/list-products-admin [get]
 func ListProducts(c *gin.Context) {
@@ -486,6 +516,8 @@ func ListProducts(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param category body string true "Category"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/category [post]
 func AddCategory(c *gin.Context) {
@@ -550,6 +582,9 @@ func AddCategory(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param category body string true "Category"
+// @param id path string true "Category ID"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/category/:id [put]
 func UpdateCategory(c *gin.Context) {
@@ -612,6 +647,8 @@ func UpdateCategory(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param id path string true "Category ID"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/category/:id [delete]
 func DeleteCategory(c *gin.Context) {
@@ -666,6 +703,10 @@ func DeleteCategory(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param name body string true "Coupon Name"
+// @param int body int true "Coupon Discount"
+// @param expiry body string true "Coupon Expiry"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/coupon [post]
 func AddCoupon(c *gin.Context) {
@@ -733,6 +774,8 @@ func AddCoupon(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param id path string true "Coupon ID"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/coupon/:id [delete]
 func DeleteCoupon(c *gin.Context) {
@@ -788,6 +831,7 @@ func DeleteCoupon(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/coupon [get]
 func ListCoupons(c *gin.Context) {
@@ -856,6 +900,8 @@ func ListCoupons(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param int body int true "Stock"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/update-stock/:id [put]
 func AddStock(c *gin.Context) {
@@ -921,6 +967,10 @@ func AddStock(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param category_id body int true "Category ID"
+// @param discount body int true "Discount"
+// @param expiry body string true "Expiry"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/offer [post]
 func AddOffer(c *gin.Context) {
@@ -986,6 +1036,7 @@ func AddOffer(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/offer [get]
 func ListAllOffers(c *gin.Context) {
@@ -1052,6 +1103,8 @@ func ListAllOffers(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param id path string true "Offer ID"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/offer/:id [put]
 func ChangeOffersStatus(c *gin.Context) {
@@ -1106,6 +1159,7 @@ func ChangeOffersStatus(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/list-orders [get]
 func ListAllOrders(c *gin.Context) {
@@ -1165,6 +1219,17 @@ func ListAllOrders(c *gin.Context) {
 	})
 
 }
+
+// @Summary Update Order Status
+// @Description Update order status by admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param email body string true "Email"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/update-order [put]
 func UpdateOrderStatus(c *gin.Context) {
 	var req struct {
 		Email string `json:"email"`

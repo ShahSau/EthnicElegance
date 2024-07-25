@@ -27,7 +27,6 @@ type JwtClaim struct {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
-// // @Param			signup  body  types.UserClient  true	"signup"
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/signup [post]
@@ -170,8 +169,9 @@ func SignOut(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			address  body  types.AddressData  true	"address"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/address [post]
@@ -236,8 +236,9 @@ func AddAddress(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			address  body  types.AddressData  true	"address"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/address [put]
@@ -301,8 +302,9 @@ func EditAddress(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			updatePassword  body  types.UpdatePassword  true	"updatePassword"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/update-user [put]
@@ -371,8 +373,9 @@ func UpdateUser(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			name  body  types.NameData  true	"name"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/name [put]
@@ -435,9 +438,9 @@ func EditName(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
-// @Param			productId  body  string  true	"productId"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/favorite [post]
@@ -503,9 +506,10 @@ func AddToFavorite(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
 // @Param			productId  body  string  true	"productId"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/remove-favorite [post]
@@ -571,8 +575,9 @@ func RemoveFromFavorite(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/favorite [get]
@@ -637,10 +642,11 @@ func ListFavorite(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
 // @Param			productId  body  string  true	"productId"
 // @Param			quantity  body  int  true	"quantity"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/cart [post]
@@ -748,9 +754,10 @@ func AddToCart(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
 // @Param			productId  body  string  true	"productId"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/cart/remove [post]
@@ -824,10 +831,11 @@ func RemoveFromCart(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
 // @Param			productId  body  string  true	"productId"
 // @Param			quantity  body  int  true	"quantity"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/cart/update [post]
@@ -904,8 +912,9 @@ func UpdateCart(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/cart [get]
@@ -952,8 +961,9 @@ func ListCart(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/cart/all [post]
@@ -997,12 +1007,13 @@ func EmptyCart(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
 // @Param			coupon  body  string  true	"coupon"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
-// @Router			/v1/ecommerce/coupon [post]
+// @Router			/v1/ecommerce/cart/coupon [post]
 func ApplyCoupon(c *gin.Context) {
 	var coupon struct {
 		Email  string `json:"email" bson:"email"`
@@ -1079,8 +1090,9 @@ func ApplyCoupon(c *gin.Context) {
 // @Tags			User
 // @Accept			json
 // @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param			email  body  string  true	"email"
-// @Security        ApiKeyAuth
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/checkout [post]

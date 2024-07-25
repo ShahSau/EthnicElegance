@@ -155,7 +155,10 @@ func GetProductLink(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param id path string true "Product ID"
+// @Param rating body types.Rating true "Rating"
 // @Success 200 {object}  string
 // @Router /v1/ecommerce/rating/{id} [post]
 func GiveRating(c *gin.Context) {
@@ -223,6 +226,8 @@ func GiveRating(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param id path string true "Product ID"
 // @Success 200 {object}  string
 // @Router /v1/ecommerce/comment/{id} [post]
@@ -290,6 +295,8 @@ func CommentOnProduct(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param search body string true "Search"
 // @Param limit body int true "Limit"
 // @Param page body int true "Page"
