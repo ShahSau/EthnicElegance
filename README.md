@@ -13,6 +13,8 @@ https://ethnicelegance.onrender.com/v1/ecommerce/swagger/index.html#/
 - [ ] `►  Email Verification`
 - [ ] `►  OTP `
 - [ ] `►  API Testing`
+- [ ] `►  Docker`
+- [ ] `►  CI/CD`
 
 
 ---
