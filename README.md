@@ -17,7 +17,7 @@
 	<img src="https://img.shields.io/badge/YAML-CB171E.svg?style=flat&logo=YAML&logoColor=white" alt="YAML">
 	<img src="https://img.shields.io/badge/JSON-000000.svg?style=flat&logo=JSON&logoColor=white" alt="JSON">
 	<img src="https://img.shields.io/badge/Go-00ADD8.svg?style=flat&logo=Go&logoColor=white" alt="Go">
-	<img src="https://img.shields.io/badge/JWT-000000?style=flat&logo=Go&logoColor=white" alt="JWT">;
+	<img src="https://img.shields.io/badge/JWT-000000?style=flat&logo=Go&logoColor=white" alt="JWT">
         <img src="https://img.shields.io/badge/Gin-black?style=flat&logo=Go&logoColor=white" alt="Gin-go">
 </p>
 <hr>
@@ -103,13 +103,6 @@ This eCommerce backend, built with Go and Gin, provides robust and scalable func
 ---
 
 ## 🧩 Modules
-
-<details closed><summary>.</summary>
-| File                                                                     | Summary                             |
-| ---                                                                      | ---                                 |
-| [main.go](https://github.com/ShahSau/EthnicElegance/blob/master/main.go) | entry point of the go project |
-
-</details>
 
 <details closed><summary>router</summary>
 
