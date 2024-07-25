@@ -191,10 +191,11 @@ func ClientRoutes() {
 	r.Swagger(v1)
 
 	// Swagger docs
-	docs.SwaggerInfo.Title = "Ecommerce API"
-	docs.SwaggerInfo.Description = "This is a simple ecommerce API"
-
-	// r.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	docs.SwaggerInfo.Title = "Ethnic Elegance API"
+	docs.SwaggerInfo.Description = "A robust and scalable backend system built using Go and the Gin framework, designed to support a comprehensive eCommerce platform."
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "https://ethnicelegance.onrender.com"
+	docs.SwaggerInfo.BasePath = "/v1/ecommerce"
 
 	if err := r.router.Run(":" + os.Getenv("PORT")); err != nil {
 		log.Printf("Failed to run server: %v", err)
