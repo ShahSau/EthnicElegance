@@ -33,7 +33,6 @@
 >   - [🤖 Running EthnicElegance](#-running-EthnicElegance)
 >   - [🧪 Tests](#-tests)
 > - [🛠 Project Roadmap](#-project-roadmap)
-> - [🤝 Contributing](#-contributing)
 > - [📄 License](#-license)
 > - [👏 Acknowledgments](#-acknowledgments)
 
@@ -49,22 +48,25 @@ Welcome to the eCommerce Backend project! This repository contains a robust and 
 This eCommerce backend, built with Go and Gin, provides robust and scalable functionalities to support a full-fledged online store. The backend includes the following key features:
 
 <h6>JWT Authentication</h6>
-- Secure User Authentication: Implements JWT (JSON Web Token) for secure user authentication and authorization.
-- Token Generation: Generates tokens upon successful login, ensuring secure and stateless user sessions.
-- Token Validation: Validates tokens for each request to ensure that only authenticated users can access protected routes.
+<p>Secure User Authentication:
+Implements JWT (JSON Web Token) for secure user authentication and authorization.</p>
+</p>Token Generation:
+Generates tokens upon successful login, ensuring secure and stateless user sessions.</p>
+<p>Token Validation:
+Validates tokens for each request to ensure that only authenticated users can access protected routes.</p>
 
 <h6>User Section</h6>
-- User Registration: Allows new users to register with the platform by providing necessary details.
-- User Login: Enables registered users to log in and receive a JWT for session management.
-- Profile Management: Lets users view and update their profile information.
-- Order Management: Users can place new orders, view their order history, and track order statuses.
-- Product Browsing: Users can browse through the catalog of available products, view product details, and search for specific items.
+<p>User Registration: Allows new users to register with the platform by providing necessary details.</p>
+<p>User Login: Enables registered users to log in and receive a JWT for session management.</p>
+<p>Profile Management: Lets users view and update their profile information.</p>
+<p>Order Management: Users can place new orders, view their order history, and track order statuses.</p>
+<p>Product Browsing: Users can browse through the catalog of available products, view product details, and search for specific items.</p>
 
 <h6>Admin Section</h6>
-- Admin Authentication: Admin-specific authentication to access the admin dashboard and perform administrative tasks.
-- User Management: Admins can view, edit, and delete user accounts, as well as manage user permissions.
-- Product Management: Admins can add, edit, and remove products from the catalog, including updating product details and stock levels.
-- Order Management: Admins can view all orders, update order statuses, and manage the order fulfillment process.
+<p>Admin Authentication: Admin-specific authentication to access the admin dashboard and perform administrative tasks.</p>
+<p>User Management: Admins can view, edit, and delete user accounts, as well as manage user permissions.</p>
+<p>Product Management: Admins can add, edit, and remove products from the catalog, including updating product details and stock levels.</p>
+<p>Order Management: Admins can view all orders, update order statuses, and manage the order fulfillment process.</p>
 
 ---
 
@@ -214,40 +216,7 @@ go test
 
 ---
 
-## 🤝 Contributing
 
-Contributions are welcome! Here are several ways you can contribute:
-
-- **[Submit Pull Requests](https://github.com/ShahSau/EthnicElegance/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
-- **[Join the Discussions](https://github.com/ShahSau/EthnicElegance/discussions)**: Share your insights, provide feedback, or ask questions.
-- **[Report Issues](https://github.com/ShahSau/EthnicElegance/issues)**: Submit bugs found or log feature requests for Ethnicelegance.
-
-<details closed>
-    <summary>Contributing Guidelines</summary>
-
-1. **Fork the Repository**: Start by forking the project repository to your GitHub account.
-2. **Clone Locally**: Clone the forked repository to your local machine using a Git client.
-   ```sh
-   git clone https://github.com/ShahSau/EthnicElegance
-   ```
-3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
-   ```sh
-   git checkout -b new-feature-x
-   ```
-4. **Make Your Changes**: Develop and test your changes locally.
-5. **Commit Your Changes**: Commit with a clear message describing your updates.
-   ```sh
-   git commit -m 'Implemented new feature x.'
-   ```
-6. **Push to GitHub**: Push the changes to your forked repository.
-   ```sh
-   git push origin new-feature-x
-   ```
-7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
-
-Once your PR is reviewed and approved, it will be merged into the main branch.
-
-</details>
 
 ---
 ## 📄 License
