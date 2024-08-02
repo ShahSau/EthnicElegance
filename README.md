@@ -19,6 +19,7 @@
 	<img src="https://img.shields.io/badge/Go-00ADD8.svg?style=flat&logo=Go&logoColor=white" alt="Go">
 	<img src="https://img.shields.io/badge/JWT-000000?style=flat&logo=Go&logoColor=white" alt="JWT">
         <img src="https://img.shields.io/badge/Gin-black?style=flat&logo=Go&logoColor=white" alt="Gin-go">
+	<img src="https://img.shields.io/badge/MongoDB-4EA94B?style=flat&logo=mongodb&logoColor=white" alt="mongo">&nbsp;&nbsp;	
 </p>
 <hr>
 
