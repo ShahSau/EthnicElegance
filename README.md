@@ -212,8 +212,6 @@ go test
 - [ ] `► Email Verification`
 - [ ] `► OTP`
 - [ ] `► API Testing`
-- [ ] `► Docker`
-- [ ] `► CI/CD`
 
 ---
 
