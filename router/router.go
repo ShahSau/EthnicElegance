@@ -4,8 +4,10 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	docs "github.com/ShahSau/EthnicElegance/docs"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -175,6 +177,14 @@ func ClientRoutes() {
 	r := routes{
 		router: gin.Default(),
 	}
+	r.router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"https://ethnicelegance.onrender.com", "http://localhost:3000", "http://localhost:8080"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	v1 := r.router.Group(os.Getenv("API_VERSION"))
 	r.EcommerceHealthCheck(v1)
@@ -194,7 +204,8 @@ func ClientRoutes() {
 	docs.SwaggerInfo.Title = "Ethnic Elegance API"
 	docs.SwaggerInfo.Description = "A robust and scalable backend system built using Go and the Gin framework, designed to support a comprehensive eCommerce platform."
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "https://ethnicelegance.onrender.com"
+	docs.SwaggerInfo.Schemes = []string{"https"}
+	docs.SwaggerInfo.Host = "ethnicelegance.onrender.com"
 	docs.SwaggerInfo.BasePath = "/v1/ecommerce"
 
 	if err := r.router.Run(":" + os.Getenv("PORT")); err != nil {
