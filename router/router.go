@@ -206,7 +206,7 @@ func ClientRoutes() {
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Schemes = []string{"https"}
 	docs.SwaggerInfo.Host = "ethnicelegance.onrender.com"
-	docs.SwaggerInfo.BasePath = "/v1/ecommerce"
+	// docs.SwaggerInfo.BasePath = "/v1/ecommerce"
 
 	if err := r.router.Run(":" + os.Getenv("PORT")); err != nil {
 		log.Printf("Failed to run server: %v", err)
