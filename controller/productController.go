@@ -16,7 +16,7 @@ import (
 
 // @Summary List all products
 // @Description List all products
-// @Tags User
+// @Tags Product
 // @Accept json
 // @Produce json
 // @Success 200 {object}  string
@@ -53,7 +53,7 @@ func ListProductsController(c *gin.Context) {
 
 // @Summary List all categories
 // @Description List all categories
-// @Tags User
+// @Tags Product
 // @Accept json
 // @Produce json
 // @Success 200 {object}  string
@@ -87,7 +87,7 @@ func ListCategoryController(c *gin.Context) {
 
 // @Summary List single product by id
 // @Description List single product by id
-// @Tags User
+// @Tags Product
 // @Accept json
 // @Produce json
 // @Param id path string true "Product ID"
@@ -116,7 +116,7 @@ func ListSingleProductController(c *gin.Context) {
 
 // @Summary Get product link
 // @Description Get product link
-// @Tags User
+// @Tags Product
 // @Accept json
 // @Produce json
 // @Param id path string true "Product ID"
@@ -152,7 +152,7 @@ func GetProductLink(c *gin.Context) {
 
 // @Summary Give rating
 // @Description Give rating
-// @Tags User
+// @Tags Product
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -223,7 +223,7 @@ func GiveRating(c *gin.Context) {
 
 // @Summary Comment on product
 // @Description Comment on product
-// @Tags User
+// @Tags Product
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -292,7 +292,7 @@ func CommentOnProduct(c *gin.Context) {
 
 // @Summary Search product
 // @Description Search product
-// @Tags User
+// @Tags Product
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth

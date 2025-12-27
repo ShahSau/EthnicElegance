@@ -13,7 +13,6 @@ var healthCheckRoutes = Routes{
 }
 
 var userRoutes = Routes{
-	// Route{"VerifyEmail", http.MethodPost, constant.VerifyEmailRoute, controller.VerifyEmail},
 	// Route{"VerifyOtp", http.MethodPost, constant.VerifyOtpRoute, controller.VerifyOtp},
 	// Route{"ResendEmail", http.MethodPost, constant.ResendEmailRoute, controller.VerifyEmail},
 
@@ -49,6 +48,21 @@ var userAuthRoutes = Routes{
 	Route{"Get Product Link", http.MethodGet, constant.GetProductLinkRoute, controller.GetProductLink},
 	Route{"Give Rating", http.MethodPost, constant.GiveRatingRoute, controller.GiveRating},
 	Route{"Comment on Product", http.MethodPost, constant.CommentOnProductRoute, controller.CommentOnProduct},
+
+	Route{"Get user orders", http.MethodGet, constant.GetUserOrders, controller.GetUserOrders},
+	Route{"Get user profile", http.MethodGet, constant.GetUserProfile, controller.GetUserProfile},
+	Route{"Verify email address", http.MethodGet, constant.VerifyEmailRoute, controller.VerifyEmail},
+	Route{"reset password", http.MethodGet, constant.ResetPasswordRoute, controller.ResetPassword},
+	Route{"Get specific order details", http.MethodGet, constant.OrderDetails, controller.GetOrderDetails},
+	Route{"Cancel order", http.MethodPost, constant.CancelOrderRoute, controller.CancelOrder},
+
+	//GET /v1/ecommerce/products/featured - Get featured products
+	//GET /v1/ecommerce/products/new - Get new arrivals
+	// 	GET /v1/ecommerce/products/category/:id - Filter products by category
+	// GET /v1/ecommerce/products/price-range - Filter by price range
+	// PUT /v1/ecommerce/comment/:id - Edit own comment
+	// DELETE /v1/ecommerce/comment/:id - Delete own comment
+	//POST /v1/ecommerce/coupon/validate - Validate coupon before applying
 }
 
 var adminRoutes = Routes{
@@ -71,4 +85,12 @@ var adminRoutes = Routes{
 	Route{"Add Offer", http.MethodPost, constant.AddOfferRoute, controller.AddOffer},
 	Route{"List All Offers", http.MethodGet, constant.AddOfferRoute, controller.ListAllOffers},
 	Route{"Update Offer", http.MethodPut, constant.UpdateOfferRoute, controller.ChangeOffersStatus},
+
+	//GET /v1/ecommerce/admin/low-stock - Inventory alerts
+	//GET /v1/ecommerce/shipping/methods - Available shipping methods
+	// POST /v1/ecommerce/admin/shipping/method - Add shipping method
+	//POST /v1/ecommerce/admin/stock/bulk-update - Bulk stock update
+	//GET /v1/ecommerce/notifications - Get user notifications
+	// PUT /v1/ecommerce/notifications/:id/read - Mark notification as read
+	// DELETE /v1/ecommerce/notifications/:id - Delete notification
 }

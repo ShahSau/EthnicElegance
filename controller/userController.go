@@ -24,7 +24,7 @@ type JwtClaim struct {
 
 // @Summary		User Signup
 // @Description	user can signup by giving their details
-// @Tags			User
+// @Tags			Profile
 // @Accept			json
 // @Produce		    json
 // @Success		200	{object}	string
@@ -99,7 +99,7 @@ func RegisterUser(c *gin.Context) {
 
 // @Summary		User Login
 // @Description	user can login by giving their email and password
-// @Tags			User
+// @Tags			Profile
 // @Accept			json
 // @Produce		    json
 // @Param			login  body  types.Login  true	"login"
@@ -153,7 +153,7 @@ func UserLogin(c *gin.Context) {
 
 // @Summary		User Logout
 // @Description	user can logout
-// @Tags			User
+// @Tags			Profile
 // @Accept			json
 // @Produce		    json
 // @Success		200	{object}	string
@@ -166,7 +166,7 @@ func SignOut(c *gin.Context) {
 
 // @Summary		Add Address
 // @Description	user can add address
-// @Tags			User
+// @Tags			Profile
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -233,7 +233,7 @@ func AddAddress(c *gin.Context) {
 
 // @Summary		Edit Address
 // @Description	user can edit address
-// @Tags			User
+// @Tags			Profile
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -299,7 +299,7 @@ func EditAddress(c *gin.Context) {
 
 // @Summary		update password
 // @Description	user can update their password
-// @Tags			User
+// @Tags			Profile
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -370,7 +370,7 @@ func UpdateUser(c *gin.Context) {
 
 // @Summary		update name
 // @Description	user can update their name
-// @Tags			User
+// @Tags			Profile
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -435,7 +435,7 @@ func EditName(c *gin.Context) {
 
 // @Summary		Add to Favorite
 // @Description	user can add product to their favorite
-// @Tags			User
+// @Tags			Wishlist
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -503,7 +503,7 @@ func AddToFavorite(c *gin.Context) {
 
 // @Summary		Remove from Favorite
 // @Description	user can remove product from their favorite
-// @Tags			User
+// @Tags			Wishlist
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -572,7 +572,7 @@ func RemoveFromFavorite(c *gin.Context) {
 
 // @Summary		List Favorite
 // @Description	user can list their favorite
-// @Tags			User
+// @Tags			Wishlist
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -639,7 +639,7 @@ func ListFavorite(c *gin.Context) {
 
 // @Summary		Add to cart
 // @Description	user can add product to their cart
-// @Tags			User
+// @Tags			Cart
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -751,7 +751,7 @@ func AddToCart(c *gin.Context) {
 
 // @Summary		Remove from cart
 // @Description	user can remove product from their cart
-// @Tags			User
+// @Tags			Cart
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -828,7 +828,7 @@ func RemoveFromCart(c *gin.Context) {
 
 // @Summary		Update Cart
 // @Description	user can update their cart
-// @Tags			User
+// @Tags			Cart
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -909,7 +909,7 @@ func UpdateCart(c *gin.Context) {
 
 // @Summary		List Cart
 // @Description	user can list their cart
-// @Tags			User
+// @Tags			Cart
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -958,7 +958,7 @@ func ListCart(c *gin.Context) {
 
 // @Summary		Empty Cart
 // @Description	user can empty their cart
-// @Tags			User
+// @Tags			Cart
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -1004,7 +1004,7 @@ func EmptyCart(c *gin.Context) {
 
 // @Summary		Apply Coupon
 // @Description	user can apply coupon to their cart
-// @Tags			User
+// @Tags			Cart
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -1087,7 +1087,7 @@ func ApplyCoupon(c *gin.Context) {
 
 // @Summary		Checkout Order
 // @Description	user can checkout their order
-// @Tags			User
+// @Tags			Order
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
@@ -1158,4 +1158,92 @@ func CheckoutOrder(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "success"})
+}
+
+// @Summary		Get user Orders
+// @Description	user can get their orders
+// @Tags			Order
+// @Accept			json
+// @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @Param			email  body  string  true	"email"
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/orders [get]
+func GetUserOrders(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - GetUserOrders"})
+}
+
+// @Summary		User Profile
+// @Description	user can get their profile
+// @Tags			Profile
+// @Accept			json
+// @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @Param			email  body  string  true	"email"
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/profile [get]
+func GetUserProfile(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - GetUserProfile"})
+}
+
+// @Summary		Password Reset
+// @Description	user can reset their password
+// @Tags			Profile
+// @Accept			json
+// @Produce		    json
+// @Param			email  body  string  true	"email"
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/reset-password [post]
+func ResetPassword(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - PasswordReset"})
+}
+
+// @Summary		VerifyEmail
+// @Description	user can verify their email
+// @Tags			Profile
+// @Accept			json
+// @Produce		    json
+// @Param			email  body  string  true	"email"
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/verify-email [post]
+func VerifyEmail(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - VerifyEmail"})
+}
+
+// @Summary		OrderDetails
+// @Description	user can get details of a specific order
+// @Tags			Order
+// @Accept			json
+// @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @Param			email  body  string  true	"email"
+// @Param			orderId  body  string  true	"orderId"
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/order-details [get]
+func GetOrderDetails(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - GetOrderDetails"})
+}
+
+// @Summary		Cancel Order
+// @Description	user can cancel their order
+// @Tags			Order
+// @Accept			json
+// @Produce		    json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @Param			email  body  string  true	"email"
+// @Param			orderId  body  string  true	"orderId"
+// @Success		200	{object}	string
+// @Failure		500	{object}	string
+// @Router			/v1/ecommerce/cancel-order [post]
+func CancelOrder(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - CancelOrder"})
 }

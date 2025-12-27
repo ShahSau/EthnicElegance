@@ -60,6 +60,11 @@ const (
 	UpdateOfferRoute        = "/offer/:id"
 	GiveRatingRoute         = "/rating/:id"
 	CommentOnProductRoute   = "/comment/:id"
+	GetUserOrders           = "/user/orders"
+	GetUserProfile          = "/user/profile"
+	ResetPasswordRoute      = "/reset-password"
+	OrderDetails            = "/order/:id"
+	CancelOrderRoute        = "/order/cancel/:id"
 )
 
 const (

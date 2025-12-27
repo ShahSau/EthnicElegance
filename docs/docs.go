@@ -30,7 +30,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Profile"
                 ],
                 "summary": "Edit Address",
                 "parameters": [
@@ -80,7 +80,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Profile"
                 ],
                 "summary": "Add Address",
                 "parameters": [
@@ -132,7 +132,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-User"
                 ],
                 "summary": "Block user",
                 "parameters": [
@@ -163,6 +163,67 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/ecommerce/cancel-order": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "user can cancel their order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Cancel Order",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "orderId",
+                        "name": "orderId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/ecommerce/cart": {
             "get": {
                 "security": [
@@ -178,7 +239,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Cart"
                 ],
                 "summary": "List Cart",
                 "parameters": [
@@ -228,7 +289,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Cart"
                 ],
                 "summary": "Add to cart",
                 "parameters": [
@@ -298,7 +359,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Cart"
                 ],
                 "summary": "Empty Cart",
                 "parameters": [
@@ -350,7 +411,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Cart"
                 ],
                 "summary": "Apply Coupon",
                 "parameters": [
@@ -411,7 +472,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Cart"
                 ],
                 "summary": "Remove from cart",
                 "parameters": [
@@ -472,7 +533,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Cart"
                 ],
                 "summary": "Update Cart",
                 "parameters": [
@@ -542,7 +603,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Category"
                 ],
                 "summary": "Add Category",
                 "parameters": [
@@ -588,7 +649,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Category"
                 ],
                 "summary": "List all categories",
                 "parameters": [
@@ -639,7 +700,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Category"
                 ],
                 "summary": "Delete Category",
                 "parameters": [
@@ -683,7 +744,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Order"
                 ],
                 "summary": "Checkout Order",
                 "parameters": [
@@ -735,7 +796,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "summary": "Comment on product",
                 "parameters": [
@@ -779,7 +840,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Coupon"
                 ],
                 "summary": "List all coupons",
                 "parameters": [
@@ -814,7 +875,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Coupon"
                 ],
                 "summary": "Add Coupon",
                 "parameters": [
@@ -878,7 +939,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Coupon"
                 ],
                 "summary": "Delete Coupon",
                 "parameters": [
@@ -922,7 +983,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Product"
                 ],
                 "summary": "Delete Product",
                 "parameters": [
@@ -966,7 +1027,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Wishlist"
                 ],
                 "summary": "List Favorite",
                 "parameters": [
@@ -1016,7 +1077,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Wishlist"
                 ],
                 "summary": "Add to Favorite",
                 "parameters": [
@@ -1053,6 +1114,32 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/ecommerce/health": {
+            "get": {
+                "description": "Endpoint to check the health of the server",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Health Check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/v1/ecommerce/list-category": {
             "get": {
                 "description": "List all categories",
@@ -1063,7 +1150,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "summary": "List all categories",
                 "responses": {
@@ -1091,7 +1178,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Order"
                 ],
                 "summary": "List all orders",
                 "parameters": [
@@ -1128,7 +1215,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Product"
                 ],
                 "summary": "List all products",
                 "parameters": [
@@ -1160,7 +1247,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Profile"
                 ],
                 "summary": "User Login",
                 "parameters": [
@@ -1200,7 +1287,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Profile"
                 ],
                 "summary": "User Logout",
                 "responses": {
@@ -1234,7 +1321,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Profile"
                 ],
                 "summary": "update name",
                 "parameters": [
@@ -1286,7 +1373,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Offer"
                 ],
                 "summary": "List all offers",
                 "parameters": [
@@ -1321,7 +1408,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Offer"
                 ],
                 "summary": "Add Offer",
                 "parameters": [
@@ -1385,7 +1472,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Offer"
                 ],
                 "summary": "Change Offer Status",
                 "parameters": [
@@ -1414,6 +1501,119 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/ecommerce/order-details": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "user can get details of a specific order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "OrderDetails",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "orderId",
+                        "name": "orderId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/ecommerce/orders": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "user can get their orders",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Get user Orders",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/ecommerce/product-link/:id": {
             "get": {
                 "description": "Get product link",
@@ -1424,7 +1624,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "summary": "Get product link",
                 "parameters": [
@@ -1461,7 +1661,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Product"
                 ],
                 "summary": "Add Product",
                 "parameters": [
@@ -1589,7 +1789,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "summary": "List single product by id",
                 "parameters": [
@@ -1621,12 +1821,64 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "summary": "List all products",
                 "responses": {
                     "200": {
                         "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/ecommerce/profile": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "user can get their profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "User Profile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
@@ -1649,7 +1901,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "summary": "Give rating",
                 "parameters": [
@@ -1702,7 +1954,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Wishlist"
                 ],
                 "summary": "Remove from Favorite",
                 "parameters": [
@@ -1748,6 +2000,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/ecommerce/reset-password": {
+            "post": {
+                "description": "user can reset their password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Password Reset",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/ecommerce/search": {
             "post": {
                 "security": [
@@ -1763,7 +2055,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Product"
                 ],
                 "summary": "Search product",
                 "parameters": [
@@ -1831,7 +2123,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Profile"
                 ],
                 "summary": "User Signup",
                 "responses": {
@@ -1865,7 +2157,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-User"
                 ],
                 "summary": "unblock user",
                 "parameters": [
@@ -1911,7 +2203,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Order"
                 ],
                 "summary": "Update Order Status",
                 "parameters": [
@@ -1957,7 +2249,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Product"
                 ],
                 "summary": "Update Product",
                 "parameters": [
@@ -2090,7 +2382,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-Product"
                 ],
                 "summary": "Add Stock",
                 "parameters": [
@@ -2136,7 +2428,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Profile"
                 ],
                 "summary": "update password",
                 "parameters": [
@@ -2188,7 +2480,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin"
+                    "Admin-User"
                 ],
                 "summary": "List all users",
                 "parameters": [
@@ -2203,6 +2495,46 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/ecommerce/verify-email": {
+            "post": {
+                "description": "user can verify their email",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "VerifyEmail",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
