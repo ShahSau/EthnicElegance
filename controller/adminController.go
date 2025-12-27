@@ -15,7 +15,7 @@ import (
 
 // @Summary List all users
 // @Description List all users from the database by admin
-// @Tags Admin
+// @Tags Admin-User
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -83,7 +83,7 @@ func ListAllUsers(c *gin.Context) {
 
 // @Summary Block user
 // @Description block user by the admin
-// @Tags Admin
+// @Tags Admin-User
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -145,7 +145,7 @@ func BlockUser(c *gin.Context) {
 
 // @Summary unblock user
 // @Description unblock user by the admin
-// @Tags Admin
+// @Tags Admin-User
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -220,7 +220,7 @@ func UnblockUser(c *gin.Context) {
 
 // @Summary Add Product
 // @Description Add product by admin
-// @Tags Admin
+// @Tags Admin-Product
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -304,7 +304,7 @@ func RegisterProduct(c *gin.Context) {
 
 // @Summary Update Product
 // @Description Update product by admin
-// @Tags Admin
+// @Tags Admin-Product
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -387,7 +387,7 @@ func UpdateProduct(c *gin.Context) {
 
 // @Summary Delete Product
 // @Description Delete product by admin
-// @Tags Admin
+// @Tags Admin-Product
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -443,7 +443,7 @@ func DeleteProduct(c *gin.Context) {
 
 // @Summary List all products
 // @Description List all products from the database by admin
-// @Tags Admin
+// @Tags Admin-Product
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -512,7 +512,7 @@ func ListProducts(c *gin.Context) {
 
 // @Summary Add Category
 // @Description Add category by admin
-// @Tags Admin
+// @Tags Admin-Category
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -578,7 +578,7 @@ func AddCategory(c *gin.Context) {
 
 // @Summary List all categories
 // @Description List all categories from the database by admin
-// @Tags Admin
+// @Tags Admin-Category
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -643,7 +643,7 @@ func UpdateCategory(c *gin.Context) {
 
 // @Summary Delete Category
 // @Description Delete category by admin
-// @Tags Admin
+// @Tags Admin-Category
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -699,7 +699,7 @@ func DeleteCategory(c *gin.Context) {
 
 // @Summary Add Coupon
 // @Description Add coupon by admin
-// @Tags Admin
+// @Tags Admin-Coupon
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -770,7 +770,7 @@ func AddCoupon(c *gin.Context) {
 
 // @Summary Delete Coupon
 // @Description Delete coupon by admin
-// @Tags Admin
+// @Tags Admin-Coupon
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -827,7 +827,7 @@ func DeleteCoupon(c *gin.Context) {
 
 // @Summary List all coupons
 // @Description List all coupons from the database by admin
-// @Tags Admin
+// @Tags Admin-Coupon
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -896,7 +896,7 @@ func ListCoupons(c *gin.Context) {
 
 // @Summary Add Stock
 // @Description Add stock by admin
-// @Tags Admin
+// @Tags Admin-Product
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -963,7 +963,7 @@ func AddStock(c *gin.Context) {
 
 // @Summary Add Offer
 // @Description Add offer by admin
-// @Tags Admin
+// @Tags Admin-Offer
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -1032,7 +1032,7 @@ func AddOffer(c *gin.Context) {
 
 // @Summary List all offers
 // @Description List all offers from the database by admin
-// @Tags Admin
+// @Tags Admin-Offer
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -1099,7 +1099,7 @@ func ListAllOffers(c *gin.Context) {
 
 // @Summary Change Offer Status
 // @Description Change expiry of the offers by admin
-// @Tags Admin
+// @Tags Admin-Offer
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -1155,7 +1155,7 @@ func ChangeOffersStatus(c *gin.Context) {
 
 // @Summary List all orders
 // @Description List all orders from the database by admin
-// @Tags Admin
+// @Tags Admin-Order
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -1222,7 +1222,7 @@ func ListAllOrders(c *gin.Context) {
 
 // @Summary Update Order Status
 // @Description Update order status by admin
-// @Tags Admin
+// @Tags Admin-Order
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth

@@ -76,7 +76,7 @@ paths:
       - ApiKeyAuth: []
       summary: Add Address
       tags:
-      - User
+      - Profile
     put:
       consumes:
       - application/json
@@ -108,7 +108,7 @@ paths:
       - ApiKeyAuth: []
       summary: Edit Address
       tags:
-      - User
+      - Profile
   /v1/ecommerce/block-user:
     put:
       consumes:
@@ -137,7 +137,46 @@ paths:
       - ApiKeyAuth: []
       summary: Block user
       tags:
-      - Admin
+      - Admin-User
+  /v1/ecommerce/cancel-order:
+    post:
+      consumes:
+      - application/json
+      description: user can cancel their order
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: orderId
+        in: body
+        name: orderId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Cancel Order
+      tags:
+      - Order
   /v1/ecommerce/cart:
     get:
       consumes:
@@ -170,7 +209,7 @@ paths:
       - ApiKeyAuth: []
       summary: List Cart
       tags:
-      - User
+      - Cart
     post:
       consumes:
       - application/json
@@ -214,7 +253,7 @@ paths:
       - ApiKeyAuth: []
       summary: Add to cart
       tags:
-      - User
+      - Cart
   /v1/ecommerce/cart/all:
     post:
       consumes:
@@ -247,7 +286,7 @@ paths:
       - ApiKeyAuth: []
       summary: Empty Cart
       tags:
-      - User
+      - Cart
   /v1/ecommerce/cart/coupon:
     post:
       consumes:
@@ -286,7 +325,7 @@ paths:
       - ApiKeyAuth: []
       summary: Apply Coupon
       tags:
-      - User
+      - Cart
   /v1/ecommerce/cart/remove:
     post:
       consumes:
@@ -325,7 +364,7 @@ paths:
       - ApiKeyAuth: []
       summary: Remove from cart
       tags:
-      - User
+      - Cart
   /v1/ecommerce/cart/update:
     post:
       consumes:
@@ -370,7 +409,7 @@ paths:
       - ApiKeyAuth: []
       summary: Update Cart
       tags:
-      - User
+      - Cart
   /v1/ecommerce/category:
     post:
       consumes:
@@ -399,7 +438,7 @@ paths:
       - ApiKeyAuth: []
       summary: Add Category
       tags:
-      - Admin
+      - Admin-Category
   /v1/ecommerce/category/:id:
     delete:
       consumes:
@@ -427,7 +466,7 @@ paths:
       - ApiKeyAuth: []
       summary: Delete Category
       tags:
-      - Admin
+      - Admin-Category
     put:
       consumes:
       - application/json
@@ -460,7 +499,7 @@ paths:
       - ApiKeyAuth: []
       summary: List all categories
       tags:
-      - Admin
+      - Admin-Category
   /v1/ecommerce/checkout:
     post:
       consumes:
@@ -493,7 +532,7 @@ paths:
       - ApiKeyAuth: []
       summary: Checkout Order
       tags:
-      - User
+      - Order
   /v1/ecommerce/comment/{id}:
     post:
       consumes:
@@ -521,7 +560,7 @@ paths:
       - ApiKeyAuth: []
       summary: Comment on product
       tags:
-      - User
+      - Product
   /v1/ecommerce/coupon:
     get:
       consumes:
@@ -544,7 +583,7 @@ paths:
       - ApiKeyAuth: []
       summary: List all coupons
       tags:
-      - Admin
+      - Admin-Coupon
     post:
       consumes:
       - application/json
@@ -584,7 +623,7 @@ paths:
       - ApiKeyAuth: []
       summary: Add Coupon
       tags:
-      - Admin
+      - Admin-Coupon
   /v1/ecommerce/coupon/:id:
     delete:
       consumes:
@@ -612,7 +651,7 @@ paths:
       - ApiKeyAuth: []
       summary: Delete Coupon
       tags:
-      - Admin
+      - Admin-Coupon
   /v1/ecommerce/delete-product/:id:
     delete:
       consumes:
@@ -640,7 +679,7 @@ paths:
       - ApiKeyAuth: []
       summary: Delete Product
       tags:
-      - Admin
+      - Admin-Product
   /v1/ecommerce/favorite:
     get:
       consumes:
@@ -673,7 +712,7 @@ paths:
       - ApiKeyAuth: []
       summary: List Favorite
       tags:
-      - User
+      - Wishlist
     post:
       consumes:
       - application/json
@@ -705,7 +744,24 @@ paths:
       - ApiKeyAuth: []
       summary: Add to Favorite
       tags:
-      - User
+      - Wishlist
+  /v1/ecommerce/health:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint to check the health of the server
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health Check
+      tags:
+      - Health
   /v1/ecommerce/list-category:
     get:
       consumes:
@@ -720,7 +776,7 @@ paths:
             type: string
       summary: List all categories
       tags:
-      - User
+      - Product
   /v1/ecommerce/list-orders:
     get:
       consumes:
@@ -743,7 +799,7 @@ paths:
       - ApiKeyAuth: []
       summary: List all orders
       tags:
-      - Admin
+      - Admin-Order
   /v1/ecommerce/list-products-admin:
     get:
       consumes:
@@ -766,7 +822,7 @@ paths:
       - ApiKeyAuth: []
       summary: List all products
       tags:
-      - Admin
+      - Admin-Product
   /v1/ecommerce/login:
     post:
       consumes:
@@ -792,7 +848,7 @@ paths:
             type: string
       summary: User Login
       tags:
-      - User
+      - Profile
   /v1/ecommerce/logout:
     post:
       consumes:
@@ -811,7 +867,7 @@ paths:
             type: string
       summary: User Logout
       tags:
-      - User
+      - Profile
   /v1/ecommerce/name:
     put:
       consumes:
@@ -844,7 +900,7 @@ paths:
       - ApiKeyAuth: []
       summary: update name
       tags:
-      - User
+      - Profile
   /v1/ecommerce/offer:
     get:
       consumes:
@@ -867,7 +923,7 @@ paths:
       - ApiKeyAuth: []
       summary: List all offers
       tags:
-      - Admin
+      - Admin-Offer
     post:
       consumes:
       - application/json
@@ -907,7 +963,7 @@ paths:
       - ApiKeyAuth: []
       summary: Add Offer
       tags:
-      - Admin
+      - Admin-Offer
   /v1/ecommerce/offer/:id:
     put:
       consumes:
@@ -935,7 +991,79 @@ paths:
       - ApiKeyAuth: []
       summary: Change Offer Status
       tags:
-      - Admin
+      - Admin-Offer
+  /v1/ecommerce/order-details:
+    get:
+      consumes:
+      - application/json
+      description: user can get details of a specific order
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: orderId
+        in: body
+        name: orderId
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: OrderDetails
+      tags:
+      - Order
+  /v1/ecommerce/orders:
+    get:
+      consumes:
+      - application/json
+      description: user can get their orders
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get user Orders
+      tags:
+      - Order
   /v1/ecommerce/product-link/:id:
     get:
       consumes:
@@ -956,7 +1084,7 @@ paths:
             type: string
       summary: Get product link
       tags:
-      - User
+      - Product
   /v1/ecommerce/product-register:
     post:
       consumes:
@@ -1043,7 +1171,7 @@ paths:
       - ApiKeyAuth: []
       summary: Add Product
       tags:
-      - Admin
+      - Admin-Product
   /v1/ecommerce/product/{id}:
     get:
       consumes:
@@ -1064,7 +1192,7 @@ paths:
             type: string
       summary: List single product by id
       tags:
-      - User
+      - Product
   /v1/ecommerce/products:
     get:
       consumes:
@@ -1079,7 +1207,40 @@ paths:
             type: string
       summary: List all products
       tags:
-      - User
+      - Product
+  /v1/ecommerce/profile:
+    get:
+      consumes:
+      - application/json
+      description: user can get their profile
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: User Profile
+      tags:
+      - Profile
   /v1/ecommerce/rating/{id}:
     post:
       consumes:
@@ -1113,7 +1274,7 @@ paths:
       - ApiKeyAuth: []
       summary: Give rating
       tags:
-      - User
+      - Product
   /v1/ecommerce/remove-favorite:
     post:
       consumes:
@@ -1152,7 +1313,33 @@ paths:
       - ApiKeyAuth: []
       summary: Remove from Favorite
       tags:
-      - User
+      - Wishlist
+  /v1/ecommerce/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: user can reset their password
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Password Reset
+      tags:
+      - Profile
   /v1/ecommerce/search:
     post:
       consumes:
@@ -1199,7 +1386,7 @@ paths:
       - ApiKeyAuth: []
       summary: Search product
       tags:
-      - User
+      - Product
   /v1/ecommerce/signup:
     post:
       consumes:
@@ -1218,7 +1405,7 @@ paths:
             type: string
       summary: User Signup
       tags:
-      - User
+      - Profile
   /v1/ecommerce/unblock-user:
     put:
       consumes:
@@ -1247,7 +1434,7 @@ paths:
       - ApiKeyAuth: []
       summary: unblock user
       tags:
-      - Admin
+      - Admin-User
   /v1/ecommerce/update-order:
     put:
       consumes:
@@ -1276,7 +1463,7 @@ paths:
       - ApiKeyAuth: []
       summary: Update Order Status
       tags:
-      - Admin
+      - Admin-Order
   /v1/ecommerce/update-product/:id:
     put:
       consumes:
@@ -1363,7 +1550,7 @@ paths:
       - ApiKeyAuth: []
       summary: Update Product
       tags:
-      - Admin
+      - Admin-Product
   /v1/ecommerce/update-stock/:id:
     put:
       consumes:
@@ -1392,7 +1579,7 @@ paths:
       - ApiKeyAuth: []
       summary: Add Stock
       tags:
-      - Admin
+      - Admin-Product
   /v1/ecommerce/update-user:
     put:
       consumes:
@@ -1425,7 +1612,7 @@ paths:
       - ApiKeyAuth: []
       summary: update password
       tags:
-      - User
+      - Profile
   /v1/ecommerce/users:
     get:
       consumes:
@@ -1448,5 +1635,31 @@ paths:
       - ApiKeyAuth: []
       summary: List all users
       tags:
-      - Admin
+      - Admin-User
+  /v1/ecommerce/verify-email:
+    post:
+      consumes:
+      - application/json
+      description: user can verify their email
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: VerifyEmail
+      tags:
+      - Profile
 swagger: "2.0"
