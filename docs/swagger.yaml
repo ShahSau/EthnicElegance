@@ -11,11 +11,25 @@ definitions:
       user_email:
         type: string
     type: object
+  types.CategoryData:
+    properties:
+      category:
+        type: string
+    type: object
   types.Comment:
     properties:
       comment:
         type: string
       email:
+        type: string
+    type: object
+  types.CouponData:
+    properties:
+      discount:
+        type: integer
+      expiry:
+        type: string
+      name:
         type: string
     type: object
   types.Login:
@@ -483,7 +497,7 @@ paths:
         name: category
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/types.CategoryData'
       produces:
       - application/json
       responses:
@@ -495,8 +509,8 @@ paths:
       - ApiKeyAuth: []
       summary: Add Category
       tags:
-      - Admin-Category
-  /v1/ecommerce/category/:id:
+      - Category
+  /v1/ecommerce/category/{id}:
     delete:
       consumes:
       - application/json
@@ -523,15 +537,20 @@ paths:
       - ApiKeyAuth: []
       summary: Delete Category
       tags:
-      - Admin-Category
+      - Category
     put:
       consumes:
       - application/json
-      description: List all categories from the database by admin
+      description: Update category by admin
       parameters:
       - description: Token
         in: header
         name: Authorization
+        required: true
+        type: string
+      - description: Category ID
+        in: path
+        name: id
         required: true
         type: string
       - description: Category
@@ -539,12 +558,7 @@ paths:
         name: category
         required: true
         schema:
-          type: string
-      - description: Category ID
-        in: path
-        name: id
-        required: true
-        type: string
+          $ref: '#/definitions/types.CategoryData'
       produces:
       - application/json
       responses:
@@ -554,9 +568,9 @@ paths:
             type: string
       security:
       - ApiKeyAuth: []
-      summary: List all categories
+      summary: Update Category
       tags:
-      - Admin-Category
+      - Category
   /v1/ecommerce/checkout:
     post:
       consumes:
@@ -640,7 +654,7 @@ paths:
       - ApiKeyAuth: []
       summary: List all coupons
       tags:
-      - Admin-Coupon
+      - Coupon
     post:
       consumes:
       - application/json
@@ -651,24 +665,12 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: Coupon Name
+      - description: Coupon
         in: body
         name: name
         required: true
         schema:
-          type: string
-      - description: Coupon Discount
-        in: body
-        name: int
-        required: true
-        schema:
-          type: integer
-      - description: Coupon Expiry
-        in: body
-        name: expiry
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/types.CouponData'
       produces:
       - application/json
       responses:
@@ -680,8 +682,8 @@ paths:
       - ApiKeyAuth: []
       summary: Add Coupon
       tags:
-      - Admin-Coupon
-  /v1/ecommerce/coupon/:id:
+      - Coupon
+  /v1/ecommerce/coupon/{id}:
     delete:
       consumes:
       - application/json
@@ -708,7 +710,7 @@ paths:
       - ApiKeyAuth: []
       summary: Delete Coupon
       tags:
-      - Admin-Coupon
+      - Coupon
   /v1/ecommerce/delete-notification:
     delete:
       consumes:
@@ -738,7 +740,7 @@ paths:
       summary: Delete Notification
       tags:
       - Admin-User
-  /v1/ecommerce/delete-product/:id:
+  /v1/ecommerce/delete-product/{id}:
     delete:
       consumes:
       - application/json
@@ -885,7 +887,7 @@ paths:
             type: string
       summary: List all categories
       tags:
-      - Product
+      - Category
   /v1/ecommerce/list-orders:
     get:
       consumes:
@@ -1102,7 +1104,7 @@ paths:
       summary: Add Offer
       tags:
       - Admin-Offer
-  /v1/ecommerce/offer/:id:
+  /v1/ecommerce/offer/{id}:
     put:
       consumes:
       - application/json
@@ -1660,7 +1662,7 @@ paths:
       summary: Update Order Status
       tags:
       - Admin-Order
-  /v1/ecommerce/update-product/:id:
+  /v1/ecommerce/update-product/{id}:
     put:
       consumes:
       - application/json
@@ -1747,7 +1749,7 @@ paths:
       summary: Update Product
       tags:
       - Admin-Product
-  /v1/ecommerce/update-stock/:id:
+  /v1/ecommerce/update-stock/{id}:
     put:
       consumes:
       - application/json

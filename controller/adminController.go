@@ -383,7 +383,7 @@ func RegisterProduct(c *gin.Context) {
 // @param comments body []types.Comment true "Product Comments"
 // @param category_id body string true "Product Category ID"
 // @Success 200 {object} string
-// @Router /v1/ecommerce/update-product/:id [put]
+// @Router /v1/ecommerce/update-product/{id} [put]
 func UpdateProduct(c *gin.Context) {
 	var req struct {
 		Name        string          `json:"name"`
@@ -457,7 +457,7 @@ func UpdateProduct(c *gin.Context) {
 // @param Authorization header string true "Token"
 // @param id path string true "Product ID"
 // @Success 200 {object} string
-// @Router /v1/ecommerce/delete-product/:id [delete]
+// @Router /v1/ecommerce/delete-product/{id} [delete]
 func DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
 
@@ -575,12 +575,12 @@ func ListProducts(c *gin.Context) {
 
 // @Summary Add Category
 // @Description Add category by admin
-// @Tags Admin-Category
+// @Tags Category
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param category body string true "Category"
+// @param category body types.CategoryData true "Category"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/category [post]
 func AddCategory(c *gin.Context) {
@@ -639,17 +639,17 @@ func AddCategory(c *gin.Context) {
 
 }
 
-// @Summary List all categories
-// @Description List all categories from the database by admin
-// @Tags Admin-Category
+// @Summary Update Category
+// @Description Update category by admin
+// @Tags Category
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param category body string true "Category"
-// @param id path string true "Category ID"
+// @Param id path string true "Category ID"
+// @Param category body types.CategoryData true "Category"
 // @Success 200 {object} string
-// @Router /v1/ecommerce/category/:id [put]
+// @Router /v1/ecommerce/category/{id} [put]
 func UpdateCategory(c *gin.Context) {
 	var req struct {
 		Category string `json:"category"`
@@ -688,7 +688,6 @@ func UpdateCategory(c *gin.Context) {
 	}
 
 	var categoryCollection *mongo.Collection = database.GetCollection(database.DB, constant.CategoryCollection)
-
 	_, err = categoryCollection.UpdateOne(c.Request.Context(), bson.M{"id": id}, bson.M{"$set": bson.M{"category": req.Category}})
 
 	if err != nil {
@@ -706,14 +705,14 @@ func UpdateCategory(c *gin.Context) {
 
 // @Summary Delete Category
 // @Description Delete category by admin
-// @Tags Admin-Category
+// @Tags Category
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
 // @param id path string true "Category ID"
 // @Success 200 {object} string
-// @Router /v1/ecommerce/category/:id [delete]
+// @Router /v1/ecommerce/category/{id} [delete]
 func DeleteCategory(c *gin.Context) {
 	id := c.Param("id")
 
@@ -762,14 +761,12 @@ func DeleteCategory(c *gin.Context) {
 
 // @Summary Add Coupon
 // @Description Add coupon by admin
-// @Tags Admin-Coupon
+// @Tags Coupon
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param name body string true "Coupon Name"
-// @param int body int true "Coupon Discount"
-// @param expiry body string true "Coupon Expiry"
+// @param name body types.CouponData true "Coupon"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/coupon [post]
 func AddCoupon(c *gin.Context) {
@@ -833,14 +830,14 @@ func AddCoupon(c *gin.Context) {
 
 // @Summary Delete Coupon
 // @Description Delete coupon by admin
-// @Tags Admin-Coupon
+// @Tags Coupon
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
 // @param id path string true "Coupon ID"
 // @Success 200 {object} string
-// @Router /v1/ecommerce/coupon/:id [delete]
+// @Router /v1/ecommerce/coupon/{id} [delete]
 func DeleteCoupon(c *gin.Context) {
 	id := c.Param("id")
 
@@ -890,7 +887,7 @@ func DeleteCoupon(c *gin.Context) {
 
 // @Summary List all coupons
 // @Description List all coupons from the database by admin
-// @Tags Admin-Coupon
+// @Tags Coupon
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
@@ -966,7 +963,7 @@ func ListCoupons(c *gin.Context) {
 // @param Authorization header string true "Token"
 // @param int body int true "Stock"
 // @Success 200 {object} string
-// @Router /v1/ecommerce/update-stock/:id [put]
+// @Router /v1/ecommerce/update-stock/{id} [put]
 func AddStock(c *gin.Context) {
 	var req struct {
 		Stock int `json:"stock"`
@@ -1169,7 +1166,7 @@ func ListAllOffers(c *gin.Context) {
 // @param Authorization header string true "Token"
 // @param id path string true "Offer ID"
 // @Success 200 {object} string
-// @Router /v1/ecommerce/offer/:id [put]
+// @Router /v1/ecommerce/offer/{id} [put]
 func ChangeOffersStatus(c *gin.Context) {
 	id := c.Param("id")
 	token := c.Request.Header.Get("Authorization")

@@ -675,7 +675,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Category"
+                    "Category"
                 ],
                 "summary": "Add Category",
                 "parameters": [
@@ -692,7 +692,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/types.CategoryData"
                         }
                     }
                 ],
@@ -706,14 +706,14 @@
                 }
             }
         },
-        "/v1/ecommerce/category/:id": {
+        "/v1/ecommerce/category/{id}": {
             "put": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "List all categories from the database by admin",
+                "description": "Update category by admin",
                 "consumes": [
                     "application/json"
                 ],
@@ -721,9 +721,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Category"
+                    "Category"
                 ],
-                "summary": "List all categories",
+                "summary": "Update Category",
                 "parameters": [
                     {
                         "type": "string",
@@ -733,20 +733,20 @@
                         "required": true
                     },
                     {
-                        "description": "Category",
-                        "name": "category",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "type": "string",
                         "description": "Category ID",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Category",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.CategoryData"
+                        }
                     }
                 ],
                 "responses": {
@@ -772,7 +772,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Category"
+                    "Category"
                 ],
                 "summary": "Delete Category",
                 "parameters": [
@@ -912,7 +912,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Coupon"
+                    "Coupon"
                 ],
                 "summary": "List all coupons",
                 "parameters": [
@@ -947,7 +947,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Coupon"
+                    "Coupon"
                 ],
                 "summary": "Add Coupon",
                 "parameters": [
@@ -959,30 +959,12 @@
                         "required": true
                     },
                     {
-                        "description": "Coupon Name",
+                        "description": "Coupon",
                         "name": "name",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Coupon Discount",
-                        "name": "int",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Coupon Expiry",
-                        "name": "expiry",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/types.CouponData"
                         }
                     }
                 ],
@@ -996,7 +978,7 @@
                 }
             }
         },
-        "/v1/ecommerce/coupon/:id": {
+        "/v1/ecommerce/coupon/{id}": {
             "delete": {
                 "security": [
                     {
@@ -1011,7 +993,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Coupon"
+                    "Coupon"
                 ],
                 "summary": "Delete Coupon",
                 "parameters": [
@@ -1086,7 +1068,7 @@
                 }
             }
         },
-        "/v1/ecommerce/delete-product/:id": {
+        "/v1/ecommerce/delete-product/{id}": {
             "delete": {
                 "security": [
                     {
@@ -1305,7 +1287,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Product"
+                    "Category"
                 ],
                 "summary": "List all categories",
                 "responses": {
@@ -1658,7 +1640,7 @@
                 }
             }
         },
-        "/v1/ecommerce/offer/:id": {
+        "/v1/ecommerce/offer/{id}": {
             "put": {
                 "security": [
                     {
@@ -2527,7 +2509,7 @@
                 }
             }
         },
-        "/v1/ecommerce/update-product/:id": {
+        "/v1/ecommerce/update-product/{id}": {
             "put": {
                 "security": [
                     {
@@ -2660,7 +2642,7 @@
                 }
             }
         },
-        "/v1/ecommerce/update-stock/:id": {
+        "/v1/ecommerce/update-stock/{id}": {
             "put": {
                 "security": [
                     {
@@ -2902,6 +2884,14 @@
                 }
             }
         },
+        "types.CategoryData": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                }
+            }
+        },
         "types.Comment": {
             "type": "object",
             "properties": {
@@ -2909,6 +2899,20 @@
                     "type": "string"
                 },
                 "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.CouponData": {
+            "type": "object",
+            "properties": {
+                "discount": {
+                    "type": "integer"
+                },
+                "expiry": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }

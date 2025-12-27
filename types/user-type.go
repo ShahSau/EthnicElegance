@@ -40,6 +40,16 @@ type BlockUser struct {
 	Email string `json:"user_email" bson:"user_email"`
 }
 
+type CategoryData struct {
+	Category string `json:"category" bson:"category"`
+}
+
+type CouponData struct {
+	Name     string `json:"name" bson:"name"`
+	Discount int    `json:"discount" bson:"discount"`
+	Expiry   string `json:"expiry" bson:"expiry"`
+}
+
 type Coupon struct {
 	ID       primitive.ObjectID `json:"id"`
 	Name     string             `json:"name"`

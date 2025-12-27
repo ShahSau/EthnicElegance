@@ -686,7 +686,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Category"
+                    "Category"
                 ],
                 "summary": "Add Category",
                 "parameters": [
@@ -703,7 +703,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/types.CategoryData"
                         }
                     }
                 ],
@@ -717,14 +717,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/ecommerce/category/:id": {
+        "/v1/ecommerce/category/{id}": {
             "put": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "List all categories from the database by admin",
+                "description": "Update category by admin",
                 "consumes": [
                     "application/json"
                 ],
@@ -732,9 +732,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Category"
+                    "Category"
                 ],
-                "summary": "List all categories",
+                "summary": "Update Category",
                 "parameters": [
                     {
                         "type": "string",
@@ -744,20 +744,20 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Category",
-                        "name": "category",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "type": "string",
                         "description": "Category ID",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Category",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.CategoryData"
+                        }
                     }
                 ],
                 "responses": {
@@ -783,7 +783,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Category"
+                    "Category"
                 ],
                 "summary": "Delete Category",
                 "parameters": [
@@ -923,7 +923,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Coupon"
+                    "Coupon"
                 ],
                 "summary": "List all coupons",
                 "parameters": [
@@ -958,7 +958,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Coupon"
+                    "Coupon"
                 ],
                 "summary": "Add Coupon",
                 "parameters": [
@@ -970,30 +970,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Coupon Name",
+                        "description": "Coupon",
                         "name": "name",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Coupon Discount",
-                        "name": "int",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Coupon Expiry",
-                        "name": "expiry",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/types.CouponData"
                         }
                     }
                 ],
@@ -1007,7 +989,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/ecommerce/coupon/:id": {
+        "/v1/ecommerce/coupon/{id}": {
             "delete": {
                 "security": [
                     {
@@ -1022,7 +1004,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin-Coupon"
+                    "Coupon"
                 ],
                 "summary": "Delete Coupon",
                 "parameters": [
@@ -1097,7 +1079,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/ecommerce/delete-product/:id": {
+        "/v1/ecommerce/delete-product/{id}": {
             "delete": {
                 "security": [
                     {
@@ -1316,7 +1298,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Product"
+                    "Category"
                 ],
                 "summary": "List all categories",
                 "responses": {
@@ -1669,7 +1651,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/ecommerce/offer/:id": {
+        "/v1/ecommerce/offer/{id}": {
             "put": {
                 "security": [
                     {
@@ -2538,7 +2520,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/ecommerce/update-product/:id": {
+        "/v1/ecommerce/update-product/{id}": {
             "put": {
                 "security": [
                     {
@@ -2671,7 +2653,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/ecommerce/update-stock/:id": {
+        "/v1/ecommerce/update-stock/{id}": {
             "put": {
                 "security": [
                     {
@@ -2913,6 +2895,14 @@ const docTemplate = `{
                 }
             }
         },
+        "types.CategoryData": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                }
+            }
+        },
         "types.Comment": {
             "type": "object",
             "properties": {
@@ -2920,6 +2910,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.CouponData": {
+            "type": "object",
+            "properties": {
+                "discount": {
+                    "type": "integer"
+                },
+                "expiry": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }

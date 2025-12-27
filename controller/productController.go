@@ -53,7 +53,7 @@ func ListProductsController(c *gin.Context) {
 
 // @Summary List all categories
 // @Description List all categories
-// @Tags Product
+// @Tags Category
 // @Accept json
 // @Produce json
 // @Success 200 {object}  string
