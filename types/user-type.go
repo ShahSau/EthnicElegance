@@ -36,6 +36,10 @@ type Login struct {
 	Password string `json:"password" bson:"password"`
 }
 
+type BlockUser struct {
+	Email string `json:"user_email" bson:"user_email"`
+}
+
 type Coupon struct {
 	ID       primitive.ObjectID `json:"id"`
 	Name     string             `json:"name"`

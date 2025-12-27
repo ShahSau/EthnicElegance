@@ -6,6 +6,11 @@ definitions:
       email:
         type: string
     type: object
+  types.BlockUser:
+    properties:
+      user_email:
+        type: string
+    type: object
   types.Comment:
     properties:
       comment:
@@ -125,7 +130,7 @@ paths:
         name: user_email
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/types.BlockUser'
       produces:
       - application/json
       responses:
@@ -138,6 +143,58 @@ paths:
       summary: Block user
       tags:
       - Admin-User
+  /v1/ecommerce/blocked-users:
+    get:
+      consumes:
+      - application/json
+      description: List all blocked users from the database by admin
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get all blocked users
+      tags:
+      - Admin-User
+  /v1/ecommerce/bulk-stock-update:
+    put:
+      consumes:
+      - application/json
+      description: update stock of multiple products by admin
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Products with ID and Stock
+        in: body
+        name: products
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: bluck stock update
+      tags:
+      - Admin-Product
   /v1/ecommerce/cancel-order:
     post:
       consumes:
@@ -652,6 +709,35 @@ paths:
       summary: Delete Coupon
       tags:
       - Admin-Coupon
+  /v1/ecommerce/delete-notification:
+    delete:
+      consumes:
+      - application/json
+      description: Delete notification by admin
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Notification ID
+        in: body
+        name: notification_id
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Notification
+      tags:
+      - Admin-User
   /v1/ecommerce/delete-product/:id:
     delete:
       consumes:
@@ -762,6 +848,29 @@ paths:
       summary: Health Check
       tags:
       - Health
+  /v1/ecommerce/inventory-alerts:
+    get:
+      consumes:
+      - application/json
+      description: Get products with low stock by admin
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Inventory Alerts
+      tags:
+      - Admin-Product
   /v1/ecommerce/list-category:
     get:
       consumes:
@@ -848,7 +957,7 @@ paths:
             type: string
       summary: User Login
       tags:
-      - Profile
+      - Public
   /v1/ecommerce/logout:
     post:
       consumes:
@@ -867,7 +976,36 @@ paths:
             type: string
       summary: User Logout
       tags:
-      - Profile
+      - Public
+  /v1/ecommerce/mark-notification-read:
+    put:
+      consumes:
+      - application/json
+      description: mark notification as read by admin
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Notification ID
+        in: body
+        name: notification_id
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: mark notification as read
+      tags:
+      - Admin-User
   /v1/ecommerce/name:
     put:
       consumes:
@@ -1387,6 +1525,64 @@ paths:
       summary: Search product
       tags:
       - Product
+  /v1/ecommerce/shipping-method:
+    post:
+      consumes:
+      - application/json
+      description: Add shipping method by admin
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Shipping Method Name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: Shipping Method Cost
+        in: body
+        name: cost
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add Shipping Method
+      tags:
+      - Admin-Shipping
+  /v1/ecommerce/shipping-methods:
+    get:
+      consumes:
+      - application/json
+      description: Get all shipping methods by admin
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Shipping Methods
+      tags:
+      - Admin-Shipping
   /v1/ecommerce/signup:
     post:
       consumes:
@@ -1405,7 +1601,7 @@ paths:
             type: string
       summary: User Signup
       tags:
-      - Profile
+      - Public
   /v1/ecommerce/unblock-user:
     put:
       consumes:
@@ -1422,7 +1618,7 @@ paths:
         name: user_email
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/types.BlockUser'
       produces:
       - application/json
       responses:
@@ -1432,7 +1628,7 @@ paths:
             type: string
       security:
       - ApiKeyAuth: []
-      summary: unblock user
+      summary: Unblock user
       tags:
       - Admin-User
   /v1/ecommerce/update-order:
@@ -1613,6 +1809,35 @@ paths:
       summary: update password
       tags:
       - Profile
+  /v1/ecommerce/user-notifications:
+    post:
+      consumes:
+      - application/json
+      description: get user notifications by admin
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User Email
+        in: body
+        name: user_email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: get user notifications
+      tags:
+      - Admin-User
   /v1/ecommerce/users:
     get:
       consumes:

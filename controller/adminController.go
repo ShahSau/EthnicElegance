@@ -81,6 +81,69 @@ func ListAllUsers(c *gin.Context) {
 
 }
 
+// @Summary Get all blocked users
+// @Description List all blocked users from the database by admin
+// @Tags Admin-User
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/blocked-users [get]
+func GetBlockedUsers(c *gin.Context) {
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var userCollection *mongo.Collection = database.GetCollection(database.DB, constant.UsersCollection)
+	results, err := userCollection.Find(c.Request.Context(), bson.M{"is_blocked": true}, nil)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error fetching blocked users",
+		})
+		return
+	}
+
+	defer results.Close(c.Request.Context())
+
+	var users []types.User
+	for results.Next(c.Request.Context()) {
+		var singleUser types.User
+		if err = results.Decode(&singleUser); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": true, "message": err.Error()})
+		}
+		users = append(users, singleUser)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Blocked users fetched",
+		"users":   users,
+		"error":   false,
+	})
+
+}
+
 // @Summary Block user
 // @Description block user by the admin
 // @Tags Admin-User
@@ -88,7 +151,7 @@ func ListAllUsers(c *gin.Context) {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param user_email body string true "User Email"
+// @param user_email body types.BlockUser true "User Email"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/block-user [put]
 func BlockUser(c *gin.Context) {
@@ -143,14 +206,14 @@ func BlockUser(c *gin.Context) {
 
 }
 
-// @Summary unblock user
+// @Summary Unblock user
 // @Description unblock user by the admin
 // @Tags Admin-User
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param user_email body string true "User Email"
+// @param user_email body types.BlockUser true "User Email"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/unblock-user [put]
 func UnblockUser(c *gin.Context) {
@@ -1280,4 +1343,101 @@ func UpdateOrderStatus(c *gin.Context) {
 		"message": "Order status updated",
 	})
 
+}
+
+// @Summary Inventory Alerts
+// @Description Get products with low stock by admin
+// @Tags Admin-Product
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/inventory-alerts [get]
+func InventoryAlerts(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - CancelOrder"})
+}
+
+// @Summary Shipping Methods
+// @Description Get all shipping methods by admin
+// @Tags Admin-Shipping
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/shipping-methods [get]
+func ShippingMethods(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - ShippingMethods"})
+}
+
+// @Summary Add Shipping Method
+// @Description Add shipping method by admin
+// @Tags Admin-Shipping
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param name body string true "Shipping Method Name"
+// @param cost body int true "Shipping Method Cost"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/shipping-method [post]
+func AddShippingMethod(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - AddShippingMethod"})
+}
+
+// @Summary bluck stock update
+// @Description update stock of multiple products by admin
+// @Tags Admin-Product
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param products body string true "Products with ID and Stock"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/bulk-stock-update [put]
+func BulkStockUpdate(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - BulkStockUpdate"})
+}
+
+// @Summary get user notifications
+// @Description get user notifications by admin
+// @Tags Admin-User
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param user_email body string true "User Email"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/user-notifications [post]
+func GetUserNotifications(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - GetUserNotifications"})
+}
+
+// @Summary mark notification as read
+// @Description mark notification as read by admin
+// @Tags Admin-User
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param notification_id body string true "Notification ID"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/mark-notification-read [put]
+func MarkNotificationAsRead(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - MarkNotificationAsRead"})
+}
+
+// @Summary Delete Notification
+// @Description Delete notification by admin
+// @Tags Admin-User
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
+// @param notification_id body string true "Notification ID"
+// @Success 200 {object} string
+// @Router /v1/ecommerce/delete-notification [delete]
+func DeleteNotification(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - DeleteNotification"})
 }

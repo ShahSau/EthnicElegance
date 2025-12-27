@@ -24,7 +24,7 @@ type JwtClaim struct {
 
 // @Summary		User Signup
 // @Description	user can signup by giving their details
-// @Tags			Profile
+// @Tags			Public
 // @Accept			json
 // @Produce		    json
 // @Success		200	{object}	string
@@ -99,7 +99,7 @@ func RegisterUser(c *gin.Context) {
 
 // @Summary		User Login
 // @Description	user can login by giving their email and password
-// @Tags			Profile
+// @Tags			Public
 // @Accept			json
 // @Produce		    json
 // @Param			login  body  types.Login  true	"login"
@@ -153,7 +153,7 @@ func UserLogin(c *gin.Context) {
 
 // @Summary		User Logout
 // @Description	user can logout
-// @Tags			Profile
+// @Tags			Public
 // @Accept			json
 // @Produce		    json
 // @Success		200	{object}	string

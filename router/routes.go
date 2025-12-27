@@ -69,6 +69,7 @@ var adminRoutes = Routes{
 	Route{"All Users", http.MethodGet, constant.GetAllUserRoute, controller.ListAllUsers},
 	Route{"Block User", http.MethodPut, constant.BlockUserRoute, controller.BlockUser},
 	Route{"Unblock User", http.MethodPut, constant.UnblockUserRoute, controller.UnblockUser},
+	Route{"Get all blocked users", http.MethodGet, constant.GetBlockedUsersRoute, controller.GetBlockedUsers},
 	Route{"Register Product", http.MethodPost, constant.RegisterProductRoute, controller.RegisterProduct},
 	Route{"Update Product", http.MethodPut, constant.UpdateProductRoute, controller.UpdateProduct},
 	Route{"Delete Product", http.MethodDelete, constant.DeleteProductRoute, controller.DeleteProduct},
@@ -85,12 +86,11 @@ var adminRoutes = Routes{
 	Route{"Add Offer", http.MethodPost, constant.AddOfferRoute, controller.AddOffer},
 	Route{"List All Offers", http.MethodGet, constant.AddOfferRoute, controller.ListAllOffers},
 	Route{"Update Offer", http.MethodPut, constant.UpdateOfferRoute, controller.ChangeOffersStatus},
-
-	//GET /v1/ecommerce/admin/low-stock - Inventory alerts
-	//GET /v1/ecommerce/shipping/methods - Available shipping methods
-	// POST /v1/ecommerce/admin/shipping/method - Add shipping method
-	//POST /v1/ecommerce/admin/stock/bulk-update - Bulk stock update
-	//GET /v1/ecommerce/notifications - Get user notifications
-	// PUT /v1/ecommerce/notifications/:id/read - Mark notification as read
-	// DELETE /v1/ecommerce/notifications/:id - Delete notification
+	Route{"Inventory alerts", http.MethodGet, constant.InventoryAlertsRoute, controller.InventoryAlerts},
+	Route{"Available shipping methods", http.MethodGet, constant.ShippingMethodsRoute, controller.ShippingMethods},
+	Route{"Add shipping method", http.MethodPost, constant.AddShippingMethodRoute, controller.AddShippingMethod},
+	Route{"Bulk stock update", http.MethodPut, constant.BulkStockUpdateRoute, controller.BulkStockUpdate},
+	Route{"Get user notifications", http.MethodGet, constant.GetUserNotificationsRoute, controller.GetUserNotifications},
+	Route{"Mark notification as read", http.MethodPut, constant.MarkNotificationReadRoute, controller.MarkNotificationAsRead},
+	Route{"Delete notification", http.MethodDelete, constant.DeleteNotificationRoute, controller.DeleteNotification},
 }
