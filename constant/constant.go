@@ -40,7 +40,7 @@ const (
 	CheckoutRoute           = "/checkout"
 	AddToFavoriteRoute      = "/favorite"
 	RemoveFromFavoriteRoute = "/remove-favorite"
-	ListFavoriteRoute       = "/favorite"
+	ListFavoriteRoute       = "/favorites"
 	GetAllUserRoute         = "/users"
 	BlockUserRoute          = "/block-user"
 	UnblockUserRoute        = "/unblock-user"

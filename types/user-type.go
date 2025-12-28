@@ -159,3 +159,8 @@ type Search struct {
 	Page   int    `json:"page"`
 	Offset int    `json:"offset"`
 }
+
+type FavouriteProduct struct {
+	Email     string `json:"email" bson:"email"`
+	ProductId string `json:"productId" bson:"productId"`
+}

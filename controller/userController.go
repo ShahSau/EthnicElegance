@@ -440,7 +440,7 @@ func EditName(c *gin.Context) {
 // @Produce		    json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @Param			email  body  string  true	"email"
+// @Param			email  body  types.FavouriteProduct  true	"email"
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/favorite [post]
@@ -508,8 +508,7 @@ func AddToFavorite(c *gin.Context) {
 // @Produce		    json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @Param			email  body  string  true	"email"
-// @Param			productId  body  string  true	"productId"
+// @Param			email  body  types.FavouriteProduct  true	"email"
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
 // @Router			/v1/ecommerce/remove-favorite [post]
@@ -570,17 +569,17 @@ func RemoveFromFavorite(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"error": false, "message": "Removed from Favorite"})
 }
 
-// @Summary		List Favorite
+// @Summary		List Favorites
 // @Description	user can list their favorite
 // @Tags			Wishlist
 // @Accept			json
 // @Produce		    json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @Param			email  body  string  true	"email"
+// @Param			email  body  types.UpdateOrderStatus  true	"email"
 // @Success		200	{object}	string
 // @Failure		500	{object}	string
-// @Router			/v1/ecommerce/favorite [get]
+// @Router			/v1/ecommerce/favorites [post]
 func ListFavorite(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 

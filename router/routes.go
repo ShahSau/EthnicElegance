@@ -39,7 +39,7 @@ var userAuthRoutes = Routes{
 	Route{"Checkout Order", http.MethodPost, constant.CheckoutRoute, controller.CheckoutOrder},
 	Route{"Add to Favorite", http.MethodPost, constant.AddToFavoriteRoute, controller.AddToFavorite},
 	Route{"Remove from Favorite", http.MethodPost, constant.RemoveFromFavoriteRoute, controller.RemoveFromFavorite},
-	Route{"List Favorite", http.MethodGet, constant.ListFavoriteRoute, controller.ListFavorite},
+	Route{"List Favorite", http.MethodPost, constant.ListFavoriteRoute, controller.ListFavorite},
 	Route{"Remove from Cart", http.MethodPost, constant.RemoveFromCartRoute, controller.RemoveFromCart},
 	Route{"Update Cart", http.MethodPut, constant.UpdateCart, controller.UpdateCart},
 	Route{"List Cart", http.MethodGet, constant.ListCartRoute, controller.ListCart},

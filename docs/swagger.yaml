@@ -32,6 +32,13 @@ definitions:
       name:
         type: string
     type: object
+  types.FavouriteProduct:
+    properties:
+      email:
+        type: string
+      productId:
+        type: string
+    type: object
   types.Login:
     properties:
       email:
@@ -788,38 +795,6 @@ paths:
       tags:
       - Admin-Product
   /v1/ecommerce/favorite:
-    get:
-      consumes:
-      - application/json
-      description: user can list their favorite
-      parameters:
-      - description: Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: email
-        in: body
-        name: email
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: List Favorite
-      tags:
-      - Wishlist
     post:
       consumes:
       - application/json
@@ -835,7 +810,7 @@ paths:
         name: email
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/types.FavouriteProduct'
       produces:
       - application/json
       responses:
@@ -850,6 +825,39 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Add to Favorite
+      tags:
+      - Wishlist
+  /v1/ecommerce/favorites:
+    post:
+      consumes:
+      - application/json
+      description: user can list their favorite
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          $ref: '#/definitions/types.UpdateOrderStatus'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: List Favorite
       tags:
       - Wishlist
   /v1/ecommerce/health:
@@ -1358,13 +1366,7 @@ paths:
         name: email
         required: true
         schema:
-          type: string
-      - description: productId
-        in: body
-        name: productId
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/types.FavouriteProduct'
       produces:
       - application/json
       responses:
