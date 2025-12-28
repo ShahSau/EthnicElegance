@@ -46,10 +46,65 @@ definitions:
       name:
         type: string
     type: object
+  types.Offer:
+    properties:
+      category_id:
+        type: integer
+      discount:
+        type: integer
+      expiry:
+        type: boolean
+    type: object
+  types.Product:
+    properties:
+      category_id:
+        type: string
+      comments:
+        items:
+          $ref: '#/definitions/types.Comment'
+        type: array
+      description:
+        type: string
+      id:
+        type: string
+      images:
+        type: string
+      keywords:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      num_rating:
+        type: integer
+      price:
+        type: integer
+      rating:
+        type: number
+      stock:
+        type: integer
+    type: object
+  types.ProductStockUpdate:
+    properties:
+      stock:
+        type: integer
+    type: object
   types.Rating:
     properties:
       rating:
         type: number
+    type: object
+  types.ShippingMethod:
+    properties:
+      cost:
+        type: integer
+      name:
+        type: string
+    type: object
+  types.UpdateOrderStatus:
+    properties:
+      email:
+        type: string
     type: object
   types.UpdatePassword:
     properties:
@@ -180,35 +235,6 @@ paths:
       summary: Get all blocked users
       tags:
       - Admin-User
-  /v1/ecommerce/bulk-stock-update:
-    put:
-      consumes:
-      - application/json
-      description: update stock of multiple products by admin
-      parameters:
-      - description: Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Products with ID and Stock
-        in: body
-        name: products
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: bluck stock update
-      tags:
-      - Admin-Product
   /v1/ecommerce/cancel-order:
     post:
       consumes:
@@ -850,29 +876,6 @@ paths:
       summary: Health Check
       tags:
       - Health
-  /v1/ecommerce/inventory-alerts:
-    get:
-      consumes:
-      - application/json
-      description: Get products with low stock by admin
-      parameters:
-      - description: Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Inventory Alerts
-      tags:
-      - Admin-Product
   /v1/ecommerce/list-category:
     get:
       consumes:
@@ -979,6 +982,29 @@ paths:
       summary: User Logout
       tags:
       - Public
+  /v1/ecommerce/low-stock:
+    get:
+      consumes:
+      - application/json
+      description: Get products with low stock by admin
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Inventory Alerts
+      tags:
+      - Admin-Product
   /v1/ecommerce/mark-notification-read:
     put:
       consumes:
@@ -1074,24 +1100,12 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: Category ID
+      - description: Offer
         in: body
         name: category_id
         required: true
         schema:
-          type: integer
-      - description: Discount
-        in: body
-        name: discount
-        required: true
-        schema:
-          type: integer
-      - description: Expiry
-        in: body
-        name: expiry
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/types.Offer'
       produces:
       - application/json
       responses:
@@ -1236,70 +1250,12 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: Product Name
+      - description: Product
         in: body
         name: name
         required: true
         schema:
-          type: string
-      - description: Product Price
-        in: body
-        name: price
-        required: true
-        schema:
-          type: integer
-      - description: Product Description
-        in: body
-        name: description
-        required: true
-        schema:
-          type: string
-      - description: Product Images
-        in: body
-        name: images
-        required: true
-        schema:
-          type: string
-      - description: Product Rating
-        in: body
-        name: rating
-        required: true
-        schema:
-          type: number
-      - description: Product Stock
-        in: body
-        name: stock
-        required: true
-        schema:
-          type: integer
-      - description: Product Keywords
-        in: body
-        name: keywords
-        required: true
-        schema:
-          items:
-            type: string
-          type: array
-      - description: Product Number of Ratings
-        in: body
-        name: num_rating
-        required: true
-        schema:
-          type: integer
-      - description: Product Comments
-        in: body
-        name: comments
-        required: true
-        schema:
-          items:
-            $ref: '#/definitions/types.Comment'
-          type: array
-      - description: Product Category ID
-        in: body
-        name: category_id
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/types.Product'
       produces:
       - application/json
       responses:
@@ -1543,13 +1499,7 @@ paths:
         name: name
         required: true
         schema:
-          type: string
-      - description: Shipping Method Cost
-        in: body
-        name: cost
-        required: true
-        schema:
-          type: integer
+          $ref: '#/definitions/types.ShippingMethod'
       produces:
       - application/json
       responses:
@@ -1649,7 +1599,7 @@ paths:
         name: email
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/types.UpdateOrderStatus'
       produces:
       - application/json
       responses:
@@ -1673,70 +1623,17 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: Product Name
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Product
         in: body
         name: name
         required: true
         schema:
-          type: string
-      - description: Product Price
-        in: body
-        name: price
-        required: true
-        schema:
-          type: integer
-      - description: Product Description
-        in: body
-        name: description
-        required: true
-        schema:
-          type: string
-      - description: Product Images
-        in: body
-        name: images
-        required: true
-        schema:
-          type: string
-      - description: Product Rating
-        in: body
-        name: rating
-        required: true
-        schema:
-          type: number
-      - description: Product Stock
-        in: body
-        name: stock
-        required: true
-        schema:
-          type: integer
-      - description: Product Keywords
-        in: body
-        name: keywords
-        required: true
-        schema:
-          items:
-            type: string
-          type: array
-      - description: Product Number of Ratings
-        in: body
-        name: num_rating
-        required: true
-        schema:
-          type: integer
-      - description: Product Comments
-        in: body
-        name: comments
-        required: true
-        schema:
-          items:
-            $ref: '#/definitions/types.Comment'
-          type: array
-      - description: Product Category ID
-        in: body
-        name: category_id
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/types.Product'
       produces:
       - application/json
       responses:
@@ -1760,12 +1657,17 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
       - description: Stock
         in: body
         name: int
         required: true
         schema:
-          type: integer
+          $ref: '#/definitions/types.ProductStockUpdate'
       produces:
       - application/json
       responses:

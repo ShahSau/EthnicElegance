@@ -40,6 +40,10 @@ type BlockUser struct {
 	Email string `json:"user_email" bson:"user_email"`
 }
 
+type UpdateOrderStatus struct {
+	Email string `json:"email" bson:"email"`
+}
+
 type CategoryData struct {
 	Category string `json:"category" bson:"category"`
 }
@@ -69,6 +73,15 @@ type Product struct {
 	NumRating   int                `json:"num_rating"`
 	Comments    []Comment          `json:"comments"`
 	CategoryId  string             `json:"category_id"`
+}
+
+type ShippingMethod struct {
+	Name string `json:"name"`
+	Cost int    `json:"cost"`
+}
+
+type ProductStockUpdate struct {
+	Stock int `json:"stock"`
 }
 
 type Comment struct {

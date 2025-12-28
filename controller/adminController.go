@@ -288,16 +288,7 @@ func UnblockUser(c *gin.Context) {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param name body string true "Product Name"
-// @param price body int true "Product Price"
-// @param description body string true "Product Description"
-// @param images body string true "Product Images"
-// @param rating body float64 true "Product Rating"
-// @param stock body int true "Product Stock"
-// @param keywords body []string true "Product Keywords"
-// @param num_rating body int true "Product Number of Ratings"
-// @param comments body []types.Comment true "Product Comments"
-// @param category_id body string true "Product Category ID"
+// @param name body types.Product true "Product"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/product-register [post]
 func RegisterProduct(c *gin.Context) {
@@ -372,16 +363,8 @@ func RegisterProduct(c *gin.Context) {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param name body string true "Product Name"
-// @param price body int true "Product Price"
-// @param description body string true "Product Description"
-// @param images body string true "Product Images"
-// @param rating body float64 true "Product Rating"
-// @param stock body int true "Product Stock"
-// @param keywords body []string true "Product Keywords"
-// @param num_rating body int true "Product Number of Ratings"
-// @param comments body []types.Comment true "Product Comments"
-// @param category_id body string true "Product Category ID"
+// @Param id path string true "Product ID"
+// @param name body types.Product true "Product"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/update-product/{id} [put]
 func UpdateProduct(c *gin.Context) {
@@ -961,7 +944,8 @@ func ListCoupons(c *gin.Context) {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param int body int true "Stock"
+// @Param id path string true "Product ID"
+// @param int body types.ProductStockUpdate true "Stock"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/update-stock/{id} [put]
 func AddStock(c *gin.Context) {
@@ -1028,9 +1012,7 @@ func AddStock(c *gin.Context) {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param category_id body int true "Category ID"
-// @param discount body int true "Discount"
-// @param expiry body string true "Expiry"
+// @param category_id body types.Offer true "Offer"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/offer [post]
 func AddOffer(c *gin.Context) {
@@ -1287,7 +1269,7 @@ func ListAllOrders(c *gin.Context) {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param email body string true "Email"
+// @param email body types.UpdateOrderStatus true "Email"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/update-order [put]
 func UpdateOrderStatus(c *gin.Context) {
@@ -1350,9 +1332,61 @@ func UpdateOrderStatus(c *gin.Context) {
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
 // @Success 200 {object} string
-// @Router /v1/ecommerce/inventory-alerts [get]
+// @Router /v1/ecommerce/low-stock [get]
 func InventoryAlerts(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - CancelOrder"})
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var productCollection *mongo.Collection = database.GetCollection(database.DB, constant.ProductCollection)
+
+	results, err := productCollection.Find(c.Request.Context(), bson.M{"stock": bson.M{"$lt": 10}}, nil)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error fetching inventory alerts",
+		})
+		return
+	}
+
+	defer results.Close(c.Request.Context())
+
+	var products []types.Product
+
+	for results.Next(c.Request.Context()) {
+		var singleProduct types.Product
+		if err = results.Decode(&singleProduct); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": true, "message": err.Error()})
+		}
+
+		products = append(products, singleProduct)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":  "Inventory alerts fetched",
+		"products": products,
+		"error":    false,
+	})
 }
 
 // @Summary Shipping Methods
@@ -1365,7 +1399,59 @@ func InventoryAlerts(c *gin.Context) {
 // @Success 200 {object} string
 // @Router /v1/ecommerce/shipping-methods [get]
 func ShippingMethods(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - ShippingMethods"})
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+	_, userType, err := helper.VerifyToken(token)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	if userType != "admin" {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
+
+	var shippingCollection *mongo.Collection = database.GetCollection(database.DB, constant.ShippingCollection)
+
+	results, err := shippingCollection.Find(c.Request.Context(), bson.M{}, nil)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error fetching shipping methods",
+		})
+		return
+	}
+
+	defer results.Close(c.Request.Context())
+
+	var shippingMethods []types.ShippingMethod
+
+	for results.Next(c.Request.Context()) {
+		var singleShippingMethod types.ShippingMethod
+		if err = results.Decode(&singleShippingMethod); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": true, "message": err.Error()})
+		}
+
+		shippingMethods = append(shippingMethods, singleShippingMethod)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":          "Shipping methods fetched",
+		"shipping_methods": shippingMethods,
+		"error":            false,
+	})
 }
 
 // @Summary Add Shipping Method
@@ -1375,66 +1461,59 @@ func ShippingMethods(c *gin.Context) {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @param name body string true "Shipping Method Name"
-// @param cost body int true "Shipping Method Cost"
+// @param name body types.ShippingMethod true "Shipping Method Name"
 // @Success 200 {object} string
 // @Router /v1/ecommerce/shipping-method [post]
 func AddShippingMethod(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - AddShippingMethod"})
-}
+	token := c.Request.Header.Get("Authorization")
 
-// @Summary bluck stock update
-// @Description update stock of multiple products by admin
-// @Tags Admin-Product
-// @Accept json
-// @Produce json
-// @Security ApiKeyAuth
-// @param Authorization header string true "Token"
-// @param products body string true "Products with ID and Stock"
-// @Success 200 {object} string
-// @Router /v1/ecommerce/bulk-stock-update [put]
-func BulkStockUpdate(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - BulkStockUpdate"})
-}
+	if token == "" {
+		c.JSON(400, gin.H{
+			"message": "Token is required",
+		})
+		return
+	}
+	_, userType, err := helper.VerifyToken(token)
 
-// @Summary get user notifications
-// @Description get user notifications by admin
-// @Tags Admin-User
-// @Accept json
-// @Produce json
-// @Security ApiKeyAuth
-// @param Authorization header string true "Token"
-// @param user_email body string true "User Email"
-// @Success 200 {object} string
-// @Router /v1/ecommerce/user-notifications [post]
-func GetUserNotifications(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - GetUserNotifications"})
-}
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 
-// @Summary mark notification as read
-// @Description mark notification as read by admin
-// @Tags Admin-User
-// @Accept json
-// @Produce json
-// @Security ApiKeyAuth
-// @param Authorization header string true "Token"
-// @param notification_id body string true "Notification ID"
-// @Success 200 {object} string
-// @Router /v1/ecommerce/mark-notification-read [put]
-func MarkNotificationAsRead(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - MarkNotificationAsRead"})
-}
+	if userType != "admin" {
+		c.JSON(400, gin.H{
+			"message": "User is not an admin",
+		})
+		return
+	}
 
-// @Summary Delete Notification
-// @Description Delete notification by admin
-// @Tags Admin-User
-// @Accept json
-// @Produce json
-// @Security ApiKeyAuth
-// @param Authorization header string true "Token"
-// @param notification_id body string true "Notification ID"
-// @Success 200 {object} string
-// @Router /v1/ecommerce/delete-notification [delete]
-func DeleteNotification(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"error": true, "message": "Not implemented yet - DeleteNotification"})
+	var req struct {
+		Name string `json:"name"`
+		Cost int    `json:"cost"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Invalid request",
+		})
+		return
+	}
+
+	var shippingCollection *mongo.Collection = database.GetCollection(database.DB, constant.ShippingCollection)
+
+	shippingMethod, err := shippingCollection.InsertOne(c.Request.Context(), bson.M{"name": req.Name, "cost": req.Cost, "id": primitive.NewObjectID().Hex()})
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "Error adding shipping method",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message":         "Shipping method added",
+		"shipping_method": shippingMethod,
+	})
 }

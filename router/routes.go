@@ -89,8 +89,4 @@ var adminRoutes = Routes{
 	Route{"Inventory alerts", http.MethodGet, constant.InventoryAlertsRoute, controller.InventoryAlerts},
 	Route{"Available shipping methods", http.MethodGet, constant.ShippingMethodsRoute, controller.ShippingMethods},
 	Route{"Add shipping method", http.MethodPost, constant.AddShippingMethodRoute, controller.AddShippingMethod},
-	Route{"Bulk stock update", http.MethodPut, constant.BulkStockUpdateRoute, controller.BulkStockUpdate},
-	Route{"Get user notifications", http.MethodGet, constant.GetUserNotificationsRoute, controller.GetUserNotifications},
-	Route{"Mark notification as read", http.MethodPut, constant.MarkNotificationReadRoute, controller.MarkNotificationAsRead},
-	Route{"Delete notification", http.MethodDelete, constant.DeleteNotificationRoute, controller.DeleteNotification},
 }

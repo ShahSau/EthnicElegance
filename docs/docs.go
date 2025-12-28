@@ -200,52 +200,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/ecommerce/bulk-stock-update": {
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "update stock of multiple products by admin",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin-Product"
-                ],
-                "summary": "bluck stock update",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "Products with ID and Stock",
-                        "name": "products",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/ecommerce/cancel-order": {
             "post": {
                 "security": [
@@ -1251,43 +1205,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/ecommerce/inventory-alerts": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Get products with low stock by admin",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin-Product"
-                ],
-                "summary": "Inventory Alerts",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/ecommerce/list-category": {
             "get": {
                 "description": "List all categories",
@@ -1447,6 +1364,43 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/ecommerce/low-stock": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get products with low stock by admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-Product"
+                ],
+                "summary": "Inventory Alerts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "type": "string"
                         }
@@ -1614,30 +1568,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Category ID",
+                        "description": "Offer",
                         "name": "category_id",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Discount",
-                        "name": "discount",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Expiry",
-                        "name": "expiry",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/types.Offer"
                         }
                     }
                 ],
@@ -1867,99 +1803,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Product Name",
+                        "description": "Product",
                         "name": "name",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Product Price",
-                        "name": "price",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Product Description",
-                        "name": "description",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Product Images",
-                        "name": "images",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Product Rating",
-                        "name": "rating",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "description": "Product Stock",
-                        "name": "stock",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Product Keywords",
-                        "name": "keywords",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    {
-                        "description": "Product Number of Ratings",
-                        "name": "num_rating",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Product Comments",
-                        "name": "comments",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/types.Comment"
-                            }
-                        }
-                    },
-                    {
-                        "description": "Product Category ID",
-                        "name": "category_id",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/types.Product"
                         }
                     }
                 ],
@@ -2339,16 +2188,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Shipping Method Cost",
-                        "name": "cost",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/types.ShippingMethod"
                         }
                     }
                 ],
@@ -2506,7 +2346,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/types.UpdateOrderStatus"
                         }
                     }
                 ],
@@ -2547,99 +2387,19 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Product Name",
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Product",
                         "name": "name",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Product Price",
-                        "name": "price",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Product Description",
-                        "name": "description",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Product Images",
-                        "name": "images",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Product Rating",
-                        "name": "rating",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "description": "Product Stock",
-                        "name": "stock",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Product Keywords",
-                        "name": "keywords",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    {
-                        "description": "Product Number of Ratings",
-                        "name": "num_rating",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Product Comments",
-                        "name": "comments",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/types.Comment"
-                            }
-                        }
-                    },
-                    {
-                        "description": "Product Category ID",
-                        "name": "category_id",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/types.Product"
                         }
                     }
                 ],
@@ -2680,12 +2440,19 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
                         "description": "Stock",
                         "name": "int",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/types.ProductStockUpdate"
                         }
                     }
                 ],
@@ -2950,11 +2717,96 @@ const docTemplate = `{
                 }
             }
         },
+        "types.Offer": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "discount": {
+                    "type": "integer"
+                },
+                "expiry": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "types.Product": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "string"
+                },
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Comment"
+                    }
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "images": {
+                    "type": "string"
+                },
+                "keywords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "num_rating": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.ProductStockUpdate": {
+            "type": "object",
+            "properties": {
+                "stock": {
+                    "type": "integer"
+                }
+            }
+        },
         "types.Rating": {
             "type": "object",
             "properties": {
                 "rating": {
                     "type": "number"
+                }
+            }
+        },
+        "types.ShippingMethod": {
+            "type": "object",
+            "properties": {
+                "cost": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.UpdateOrderStatus": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
                 }
             }
         },
