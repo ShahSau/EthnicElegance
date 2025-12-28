@@ -84,6 +84,11 @@ definitions:
       stock:
         type: integer
     type: object
+  types.ProductComment:
+    properties:
+      comment:
+        type: string
+    type: object
   types.ProductStockUpdate:
     properties:
       stock:
@@ -93,6 +98,17 @@ definitions:
     properties:
       rating:
         type: number
+    type: object
+  types.Search:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+      page:
+        type: integer
+      search:
+        type: string
     type: object
   types.ShippingMethod:
     properties:
@@ -646,6 +662,12 @@ paths:
         name: id
         required: true
         type: string
+      - description: Comment
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/types.ProductComment'
       produces:
       - application/json
       responses:
@@ -737,35 +759,6 @@ paths:
       summary: Delete Coupon
       tags:
       - Coupon
-  /v1/ecommerce/delete-notification:
-    delete:
-      consumes:
-      - application/json
-      description: Delete notification by admin
-      parameters:
-      - description: Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Notification ID
-        in: body
-        name: notification_id
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Delete Notification
-      tags:
-      - Admin-User
   /v1/ecommerce/delete-product/{id}:
     delete:
       consumes:
@@ -890,7 +883,7 @@ paths:
             type: string
       summary: List all categories
       tags:
-      - Category
+      - Public
   /v1/ecommerce/list-orders:
     get:
       consumes:
@@ -1005,35 +998,6 @@ paths:
       summary: Inventory Alerts
       tags:
       - Admin-Product
-  /v1/ecommerce/mark-notification-read:
-    put:
-      consumes:
-      - application/json
-      description: mark notification as read by admin
-      parameters:
-      - description: Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Notification ID
-        in: body
-        name: notification_id
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: mark notification as read
-      tags:
-      - Admin-User
   /v1/ecommerce/name:
     put:
       consumes:
@@ -1218,12 +1182,17 @@ paths:
       summary: Get user Orders
       tags:
       - Order
-  /v1/ecommerce/product-link/:id:
+  /v1/ecommerce/product-link/{id}:
     get:
       consumes:
       - application/json
       description: Get product link
       parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Product ID
         in: path
         name: id
@@ -1236,6 +1205,8 @@ paths:
           description: OK
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Get product link
       tags:
       - Product
@@ -1303,7 +1274,7 @@ paths:
             type: string
       summary: List all products
       tags:
-      - Product
+      - Public
   /v1/ecommerce/profile:
     get:
       consumes:
@@ -1450,27 +1421,8 @@ paths:
       - description: Search
         in: body
         name: search
-        required: true
         schema:
-          type: string
-      - description: Limit
-        in: body
-        name: limit
-        required: true
-        schema:
-          type: integer
-      - description: Page
-        in: body
-        name: page
-        required: true
-        schema:
-          type: integer
-      - description: Offset
-        in: body
-        name: offset
-        required: true
-        schema:
-          type: integer
+          $ref: '#/definitions/types.Search'
       produces:
       - application/json
       responses:
@@ -1713,35 +1665,6 @@ paths:
       summary: update password
       tags:
       - Profile
-  /v1/ecommerce/user-notifications:
-    post:
-      consumes:
-      - application/json
-      description: get user notifications by admin
-      parameters:
-      - description: Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: User Email
-        in: body
-        name: user_email
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: get user notifications
-      tags:
-      - Admin-User
   /v1/ecommerce/users:
     get:
       consumes:

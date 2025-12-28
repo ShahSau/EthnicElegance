@@ -16,7 +16,7 @@ import (
 
 // @Summary List all products
 // @Description List all products
-// @Tags Product
+// @Tags Public
 // @Accept json
 // @Produce json
 // @Success 200 {object}  string
@@ -27,7 +27,7 @@ func ListProductsController(c *gin.Context) {
 
 	var products []types.Product
 
-	cursor, err := productCollection.Find(context.Background(), bson.D{})
+	cursor, err := productCollection.Find(context.Background(), bson.M{})
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -53,7 +53,7 @@ func ListProductsController(c *gin.Context) {
 
 // @Summary List all categories
 // @Description List all categories
-// @Tags Category
+// @Tags Public
 // @Accept json
 // @Produce json
 // @Success 200 {object}  string
@@ -63,7 +63,7 @@ func ListCategoryController(c *gin.Context) {
 
 	var categories []types.Category
 
-	cursor, err := categoryCollection.Find(context.Background(), bson.D{})
+	cursor, err := categoryCollection.Find(context.Background(), bson.M{})
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -100,7 +100,7 @@ func ListSingleProductController(c *gin.Context) {
 
 	var product types.Product
 
-	err := productCollection.FindOne(context.Background(), bson.D{{"id", Id}}).Decode(&product)
+	err := productCollection.FindOne(context.Background(), bson.M{"id": Id}).Decode(&product)
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -119,9 +119,11 @@ func ListSingleProductController(c *gin.Context) {
 // @Tags Product
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
+// @param Authorization header string true "Token"
 // @Param id path string true "Product ID"
 // @Success 200 {object}  string
-// @Router /v1/ecommerce/product-link/:id [get]
+// @Router /v1/ecommerce/product-link/{id} [get]
 func GetProductLink(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 	if token == "" {
@@ -196,7 +198,7 @@ func GiveRating(c *gin.Context) {
 
 	var product types.Product
 
-	err = productCollection.FindOne(context.Background(), bson.D{{"id", Id}}).Decode(&product)
+	err = productCollection.FindOne(context.Background(), bson.M{"id": Id}).Decode(&product)
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -229,6 +231,7 @@ func GiveRating(c *gin.Context) {
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
 // @Param id path string true "Product ID"
+// @Param comment body types.ProductComment true "Comment"
 // @Success 200 {object}  string
 // @Router /v1/ecommerce/comment/{id} [post]
 func CommentOnProduct(c *gin.Context) {
@@ -266,7 +269,7 @@ func CommentOnProduct(c *gin.Context) {
 
 	var product types.Product
 
-	err = productCollection.FindOne(context.Background(), bson.D{{"id", Id}}).Decode(&product)
+	err = productCollection.FindOne(context.Background(), bson.M{"id": Id}).Decode(&product)
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -297,18 +300,15 @@ func CommentOnProduct(c *gin.Context) {
 // @Produce json
 // @Security ApiKeyAuth
 // @param Authorization header string true "Token"
-// @Param search body string true "Search"
-// @Param limit body int true "Limit"
-// @Param page body int true "Page"
-// @Param offset body int true "Offset"
+// @Param search body types.Search false "Search"
 // @Success 200 {object}  string
 // @Router /v1/ecommerce/search [post]
 func SearchProductController(c *gin.Context) {
 	var reqSearch struct {
-		Search string `json:"search"`
-		Limit  int    `json:"limit"`
-		Page   int    `json:"page"`
-		Offset int    `json:"offset"`
+		Search string `json:"search" default:""`
+		Limit  int    `json:"limit" default:"10"`
+		Page   int    `json:"page" default:"1"`
+		Offset int    `json:"offset" default:"0"`
 	}
 
 	err := c.ShouldBindJSON(&reqSearch)

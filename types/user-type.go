@@ -148,3 +148,14 @@ type Order struct {
 	UpdatedAt int64           `json:"updated_at" bson:"updated_at"`
 	Deliverd  bool            `json:"deliverd" bson:"deliverd"`
 }
+
+type ProductComment struct {
+	Comment string `json:"comment" bson:"comment"`
+}
+
+type Search struct {
+	Search string `json:"search"`
+	Limit  int    `json:"limit"`
+	Page   int    `json:"page"`
+	Offset int    `json:"offset"`
+}
